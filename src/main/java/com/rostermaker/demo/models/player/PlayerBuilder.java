@@ -1,7 +1,7 @@
 package com.rostermaker.demo.models.player;
 
-import com.example.demo.enums.Part;
-import com.example.demo.enums.Type;
+import com.rostermaker.demo.enums.Part;
+import com.rostermaker.demo.enums.Type;
 
 import javax.persistence.ElementCollection;
 import java.util.ArrayList;

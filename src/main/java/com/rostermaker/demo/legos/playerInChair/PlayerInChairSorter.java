@@ -6,19 +6,19 @@ import java.util.List;
 
 public class PlayerInChairSorter {
 
-    Collection<com.example.demo.legos.playerInChair.PlayerInChair> picsToSort;
+    Collection<PlayerInChair> picsToSort;
 
-    public PlayerInChairSorter(Collection<com.example.demo.legos.playerInChair.PlayerInChair> picsToSort) {
+    public PlayerInChairSorter(Collection<PlayerInChair> picsToSort) {
         this.picsToSort = picsToSort;
     }
 
-    public List<com.example.demo.legos.playerInChair.PlayerInChair> sort() {
-        ArrayList<com.example.demo.legos.playerInChair.PlayerInChair> pics = new ArrayList<com.example.demo.legos.playerInChair.PlayerInChair>(picsToSort);
+    public List<PlayerInChair> sort() {
+        ArrayList<PlayerInChair> pics = new ArrayList<PlayerInChair>(picsToSort);
 
         int assistantIndex = 0;
         int principalIndex = 0;
         boolean assistantExists = false;
-        for (com.example.demo.legos.playerInChair.PlayerInChair pic : pics) {
+        for (PlayerInChair pic : pics) {
             if (pic.getChair().isPrincipalHorn()) {
                 principalIndex = pics.indexOf(pic);
             }

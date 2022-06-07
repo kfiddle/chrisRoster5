@@ -1,9 +1,9 @@
 package com.rostermaker.demo.legos.emptyChair;
 
 
-import com.example.demo.basicModels.piece.Piece;
-import com.example.demo.basicModels.show.Show;
-import com.example.demo.enums.Part;
+import com.rostermaker.demo.models.piece.Piece;
+import com.rostermaker.demo.models.show.Show;
+import com.rostermaker.demo.enums.Part;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,9 +62,9 @@ public class ChairBuilder {
         return this;
     }
 
-    public com.example.demo.legos.emptyChair.Chair build() {
-        return new com.example.demo.legos.emptyChair.Chair(this);
-    }
 
+    public Chair build() {
+        return new Chair(this);
+    }
 
 }

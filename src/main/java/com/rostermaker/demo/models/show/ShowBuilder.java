@@ -1,6 +1,6 @@
 package com.rostermaker.demo.models.show;
 
-import com.example.demo.basicModels.DateTime;
+import com.rostermaker.demo.models.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,8 +1,8 @@
 package com.rostermaker.demo.legos.emptyChair;
 
-import com.example.demo.basicModels.piece.Piece;
-import com.example.demo.basicModels.show.Show;
-import com.example.demo.enums.Part;
+import com.rostermaker.demo.models.piece.Piece;
+import com.rostermaker.demo.models.show.Show;
+import com.rostermaker.demo.enums.Part;
 
 import javax.persistence.*;
 import java.util.ArrayList;

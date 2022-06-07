@@ -1,6 +1,6 @@
 package com.rostermaker.demo.models.player;
 
-import com.example.demo.enums.Type;
+import com.rostermaker.demo.enums.Type;
 import com.rostermaker.demo.models.player.Player;
 
 import java.util.Optional;

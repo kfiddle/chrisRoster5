@@ -1,9 +1,9 @@
 package com.rostermaker.demo.legos.playerInChair;
 
 
-import com.example.demo.basicModels.player.Player;
-import com.example.demo.basicModels.show.Show;
-import com.example.demo.legos.ShowPiece;
+import com.rostermaker.demo.models.player.Player;
+import com.rostermaker.demo.models.show.Show;
+import com.rostermaker.demo.legos.ShowPiece;
 import com.rostermaker.demo.legos.ShowPiece;
 import com.rostermaker.demo.legos.emptyChair.Chair;
 

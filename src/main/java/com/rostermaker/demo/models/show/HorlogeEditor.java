@@ -1,6 +1,6 @@
 package com.rostermaker.demo.models.show;
 
-import com.example.demo.enums.Event;
+import com.rostermaker.demo.enums.Event;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -8,13 +8,13 @@ import java.util.Optional;
 
 public class HorlogeEditor {
 
-    com.example.demo.basicModels.show.Horloge storedHorloge;
+    Horloge storedHorloge;
 
-    public HorlogeEditor(com.example.demo.basicModels.show.Horloge storedHorloge) {
+    public HorlogeEditor(Horloge storedHorloge) {
         this.storedHorloge = storedHorloge;
     }
 
-    public void editFrom(com.example.demo.basicModels.show.Horloge incoming) {
+    public void editFrom(Horloge incoming) {
         Optional<Event> eventOpt = Optional.ofNullable(incoming.getEvent());
         Optional<LocalDate> dateOpt = Optional.ofNullable(incoming.getDate());
         Optional<LocalTime> startTimeOpt = Optional.ofNullable(incoming.getStartTime());

@@ -1,7 +1,7 @@
 package com.rostermaker.demo.legos;
 
-import com.example.demo.basicModels.piece.Piece;
-import com.example.demo.basicModels.show.Show;
+import com.rostermaker.demo.models.piece.Piece;
+import com.rostermaker.demo.models.show.Show;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

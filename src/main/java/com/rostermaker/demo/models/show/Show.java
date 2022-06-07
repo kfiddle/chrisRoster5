@@ -1,7 +1,7 @@
 package com.rostermaker.demo.models.show;
 
 
-import com.example.demo.basicModels.DateTime;
+import com.rostermaker.demo.models.DateTime;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -32,7 +32,7 @@ public class Show implements Comparable<Show> {
     public Show() {
     }
 
-    public Show(com.example.demo.basicModels.show.ShowBuilder showBuilder) {
+    public Show(ShowBuilder showBuilder) {
         this.title = showBuilder.title;
         this.performanceDates = showBuilder.performanceDates;
         this.rehearsalDates = showBuilder.rehearsalDates;

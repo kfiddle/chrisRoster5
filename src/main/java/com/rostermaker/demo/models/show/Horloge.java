@@ -1,7 +1,7 @@
 package com.rostermaker.demo.models.show;
 
 
-import com.example.demo.enums.Event;
+import com.rostermaker.demo.enums.Event;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
