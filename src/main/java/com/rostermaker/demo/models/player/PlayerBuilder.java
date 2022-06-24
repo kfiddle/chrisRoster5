@@ -1,20 +1,21 @@
 package com.rostermaker.demo.models.player;
 
-import com.rostermaker.demo.enums.Part;
 import com.rostermaker.demo.enums.Type;
+import com.rostermaker.demo.models.instrument.Instrument;
 
 import javax.persistence.ElementCollection;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
 public class PlayerBuilder {
 
     public Type type;
-    public int rank;
 
-    @ElementCollection
-    public List<Part> parts = new ArrayList<>();
+    public Instrument primaryInstrument;
+    public int rank;
+    public Collection<Instrument> otherInstruments;
 
     public String firstNameArea;
     public String lastName;
@@ -48,6 +49,12 @@ public class PlayerBuilder {
         return this;
     }
 
+    public PlayerBuilder primaryInstrument(Instrument primaryInstrument) {
+        Optional<Instrument> instOpt = Optional.ofNullable(primaryInstrument);
+        instOpt.ifPresent(gotten -> this.primaryInstrument = gotten);
+        return this;
+    }
+
     public PlayerBuilder rank(int rank) {
         if (rank > 0) {
             this.rank = rank;
@@ -55,18 +62,17 @@ public class PlayerBuilder {
         return this;
     }
 
-    public PlayerBuilder parts(List<Part> parts) {
-        Optional<List<Part>> partsOpt = Optional.ofNullable(parts);
-        partsOpt.ifPresent(gottenParts -> this.parts = gottenParts);
+    public PlayerBuilder otherInstruments(List<Instrument> instruments) {
+        Optional<Collection<Instrument>> instOpt = Optional.ofNullable(instruments);
+        instOpt.ifPresent(gottenParts -> this.otherInstruments = gottenParts);
         return this;
     }
 
-    public PlayerBuilder addAPart(Part part) {
-        Optional<Part> partOpt = Optional.ofNullable(part);
-        partOpt.ifPresent(gotten -> this.parts.add(gotten));
+    public PlayerBuilder addAnInstrument (Instrument instrument) {
+        Optional<Instrument> partOpt = Optional.ofNullable(instrument);
+        partOpt.ifPresent(gotten -> this.otherInstruments.add(gotten));
         return this;
     }
-
 
     public PlayerBuilder email(String email) {
         Optional<String> emailOpt = Optional.ofNullable(email);

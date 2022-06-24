@@ -1,13 +1,14 @@
 package com.rostermaker.demo.models.player;
 
 
-import com.rostermaker.demo.enums.Part;
 import com.rostermaker.demo.enums.Type;
 import com.rostermaker.demo.legos.emptyChair.Chair;
 import com.rostermaker.demo.legos.playerInChair.PlayerInChair;
+import com.rostermaker.demo.models.instrument.Instrument;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -20,12 +21,17 @@ public class Player implements Comparable<Player> {
     @Enumerated(EnumType.STRING)
     private Type type;
 
+    @ManyToOne
+    private Instrument primaryInstrument;
+
     private int rank;
 
-    @ElementCollection
-    private List<Part> parts = new ArrayList<>();
+//    @ElementCollection
+//    Collection<String> otherInstruments;
 
-    private Part primaryPart;
+    @ManyToMany
+    private Collection<Instrument> otherInstruments;
+
 
     private String firstNameArea;
     private String lastName;
@@ -37,7 +43,10 @@ public class Player implements Comparable<Player> {
     private String city;
     private String state;
     private String zip;
+
+    private String username;
     private String password;
+    private String role;
 
     public Player() {
     }
@@ -46,6 +55,7 @@ public class Player implements Comparable<Player> {
         firstNameArea = playerBuilder.firstNameArea;
         lastName = playerBuilder.lastName;
         type = playerBuilder.type;
+        primaryInstrument = playerBuilder.primaryInstrument;
         rank = playerBuilder.rank;
         email = playerBuilder.email;
         homePhone = playerBuilder.homePhone;
@@ -55,26 +65,24 @@ public class Player implements Comparable<Player> {
         city = playerBuilder.city;
         state = playerBuilder.state;
         zip = playerBuilder.zip;
-        parts = playerBuilder.parts;
-        if (playerBuilder.parts.size() > 0) {
-            primaryPart = playerBuilder.parts.get(0);
-        }
+        otherInstruments = playerBuilder.otherInstruments;
     }
+
 
     public void setType(Type type) {
         this.type = type;
+    }
+
+    public void setPrimaryInstrument(Instrument primaryInstrument) {
+        this.primaryInstrument = primaryInstrument;
     }
 
     public void setRank(int rank) {
         this.rank = rank;
     }
 
-    public void setParts(List<Part> parts) {
-        this.parts = parts;
-    }
-
-    public void setPrimaryPart(Part primaryPart) {
-        this.primaryPart = primaryPart;
+    public void setOtherInstruments(Collection<Instrument> otherInstruments) {
+        this.otherInstruments = otherInstruments;
     }
 
     public void setFirstNameArea(String firstNameArea) {
@@ -117,8 +125,16 @@ public class Player implements Comparable<Player> {
         this.zip = zip;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public Long getId() {
@@ -129,16 +145,16 @@ public class Player implements Comparable<Player> {
         return type;
     }
 
+    public Instrument getPrimaryInstrument() {
+        return primaryInstrument;
+    }
+
     public int getRank() {
         return rank;
     }
 
-    public List<Part> getParts() {
-        return parts;
-    }
-
-    public Part getPrimaryPart() {
-        return primaryPart;
+    public Collection<Instrument> getOtherInstruments() {
+        return otherInstruments;
     }
 
     public String getFirstNameArea() {
@@ -181,40 +197,33 @@ public class Player implements Comparable<Player> {
         return zip;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
     public String getPassword() {
         return password;
     }
 
-    //    public boolean couldSitHere(PlayerInChair pic) {
+    public String getRole() {
+        return role;
+    }
+
+//    public boolean couldSitHere(PlayerInChair pic) {
 //        Chair chair = pic.getChair();
-//
-//        if (rank > chair.getRank()) {
-//            return false;
-//        } else {
-//            for (Part chairPart : chair.getParts()) {
-//                if (!parts.contains(chairPart)) {
-//                    return false;
-//                }
+//        for (Part chairPart : chair.getParts()) {
+//            if (!parts.contains(chairPart)) {
+//                return false;
 //            }
 //        }
 //        return true;
 //    }
 
-    public boolean couldSitHere(PlayerInChair pic) {
-        Chair chair = pic.getChair();
-        for (Part chairPart : chair.getParts()) {
-            if (!parts.contains(chairPart)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
 
     @Override
     public int compareTo(Player otherPlayer) {
-        if (primaryPart.compare(otherPlayer.getPrimaryPart()) != 0) {
-            return primaryPart.compare(otherPlayer.getPrimaryPart());
+        if (primaryInstrument.compareTo(otherPlayer.getPrimaryInstrument()) != 0) {
+            return primaryInstrument.compareTo(otherPlayer.getPrimaryInstrument());
         } else if (rank < otherPlayer.getRank()) {
             return -1;
         } else return type.compare(otherPlayer.getType());
