@@ -32,7 +32,6 @@ public class Player implements Comparable<Player> {
     @ManyToMany
     private Collection<Instrument> otherInstruments;
 
-
     private String firstNameArea;
     private String lastName;
     private String email;
@@ -66,6 +65,10 @@ public class Player implements Comparable<Player> {
         state = playerBuilder.state;
         zip = playerBuilder.zip;
         otherInstruments = playerBuilder.otherInstruments;
+
+        username = playerBuilder.username;
+        password = playerBuilder.password;
+        role = "player";
     }
 
 
@@ -155,6 +158,12 @@ public class Player implements Comparable<Player> {
 
     public Collection<Instrument> getOtherInstruments() {
         return otherInstruments;
+    }
+
+    public Collection<Instrument> getAllInstruments() {
+        Collection<Instrument> allPossibles = otherInstruments;
+        allPossibles.add(primaryInstrument);
+        return allPossibles;
     }
 
     public String getFirstNameArea() {
