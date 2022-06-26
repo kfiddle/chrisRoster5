@@ -7,6 +7,7 @@ import com.rostermaker.demo.models.player.Player;
 import com.rostermaker.demo.models.player.PlayerBuilder;
 import com.rostermaker.demo.models.player.PlayerCompare;
 import com.rostermaker.demo.models.player.PlayerEditor;
+import com.rostermaker.demo.repos.InstrumentRepo;
 import com.rostermaker.demo.repos.PlayerRepo;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,12 +17,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 
-@RestController
 @CrossOrigin
+@RestController
 public class PlayerRest {
 
     @Resource
     PlayerRepo playerRepo;
+
+    @Resource
+    InstrumentRepo instrumentRepo;
 
     @RequestMapping("/get-all-players")
     public Collection<Player> getAllPlayers() {
@@ -73,17 +77,26 @@ public class PlayerRest {
         return playerRepo.findAllByType(Type.SUB);
     }
 
-    @RequestMapping("/subs/{incomingInstrument}")
-    public Collection<Player> getSubsOfInstrument(@PathVariable Instrument incomingInstrument) {
-        Collection<Player> playersToSend = new ArrayList<>();
-        for (Player player : playerRepo.findAllByType(Type.SUB)) {
-            for (Instrument inst : player.getAllInstruments()) {
-                if (inst.equals(incomingInstrument)) {
-                    playersToSend.add(player);
+    @RequestMapping("/subs-by-instrument")
+    public Collection<Player> getSubsOfInstrument(@RequestBody Instrument incomingInstrument) {
+        try {
+            Optional<Instrument> instToFind = instrumentRepo.findById(incomingInstrument.getId());
+            if (instToFind.isPresent()) {
+                Instrument foundInst = instToFind.get();
+                Collection<Player> playersToSend = new ArrayList<>();
+                for (Player player : playerRepo.findAllByType(Type.SUB)) {
+                    for (Instrument inst : player.getAllInstruments()) {
+                        if (inst.equals(foundInst)) {
+                            playersToSend.add(player);
+                        }
+                    }
                 }
+                return playersToSend;
             }
+        } catch (Exception error) {
+            error.printStackTrace();
         }
-        return playersToSend;
+        return null;
     }
 
     @PostMapping("/edit-player")
