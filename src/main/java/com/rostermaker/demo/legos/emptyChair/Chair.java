@@ -1,11 +1,13 @@
 package com.rostermaker.demo.legos.emptyChair;
 
+import com.rostermaker.demo.models.instrument.Instrument;
 import com.rostermaker.demo.models.part.Part;
 import com.rostermaker.demo.models.piece.Piece;
 import com.rostermaker.demo.models.show.Show;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -25,22 +27,17 @@ public class Chair implements Comparable<Chair> {
     private Part primaryPart;
 
     @ElementCollection
-    private List<Part> parts;
-
-    private String specialDesignate;
-
+    private List<Part> otherParts = new ArrayList<>();
 
     public Chair() {
     }
 
-//    public Chair(ChairBuilder chairBuilder) {
-//        this.piece = chairBuilder.piece;
-//        this.show = chairBuilder.show;
-//        this.rank = chairBuilder.rank;
-//        this.parts = chairBuilder.parts;
-//        this.primaryPart = parts.get(0);
-//        this.specialDesignate = chairBuilder.specialDesignate;
-//    }
+    public Chair(ChairBuilder chairBuilder) {
+        this.piece = chairBuilder.piece;
+        this.show = chairBuilder.show;
+        this.primaryPart = chairBuilder.primaryPart;
+        this.otherParts = chairBuilder.otherParts;
+    }
 
 
     public void setPiece(Piece piece) {
@@ -51,8 +48,8 @@ public class Chair implements Comparable<Chair> {
         this.show = show;
     }
 
-    public void setParts(List<Part> parts) {
-        this.parts = parts;
+    public void setOtherParts(List<Part> parts) {
+        otherParts = parts;
         primaryPart = parts.get(0);
     }
 
@@ -60,9 +57,6 @@ public class Chair implements Comparable<Chair> {
         this.primaryPart = primaryPart;
     }
 
-    public void setSpecialDesignate(String specialDesignate) {
-        this.specialDesignate = specialDesignate;
-    }
 
     public Long getId() {
         return id;
@@ -76,25 +70,24 @@ public class Chair implements Comparable<Chair> {
         return show;
     }
 
-    public List<Part> getParts() {
-        return parts;
+    public List<Part> getOtherParts() {
+        return otherParts;
+    }
+
+    public Collection<Part> getAllParts() {
+        Collection<Part> allParts = otherParts;
+        allParts.add(primaryPart);
+        return allParts;
     }
 
     public Part getPrimaryPart() {
-        return parts.get(0);
+        return primaryPart;
     }
-
-    public String getSpecialDesignate() {
-        return specialDesignate;
-    }
-
-    public boolean hasAssDesignate() {
-        return specialDesignate != null && specialDesignate.equals("Assist");
-    }
-
 
     @Override
     public int compareTo(Chair next) {
         return primaryPart.compareTo(next.getPrimaryPart());
     }
+
+
 }

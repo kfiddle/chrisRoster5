@@ -5,6 +5,7 @@ import com.rostermaker.demo.enums.Type;
 import com.rostermaker.demo.legos.emptyChair.Chair;
 import com.rostermaker.demo.legos.playerInChair.PlayerInChair;
 import com.rostermaker.demo.models.instrument.Instrument;
+import com.rostermaker.demo.models.part.Part;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class Player implements Comparable<Player> {
 //    Collection<String> otherInstruments;
 
     @ManyToMany
-    private Collection<Instrument> otherInstruments;
+    private Collection<Instrument> otherInstruments = new ArrayList<>();
 
     private String firstNameArea;
     private String lastName;
@@ -218,16 +219,6 @@ public class Player implements Comparable<Player> {
         return role;
     }
 
-//    public boolean couldSitHere(PlayerInChair pic) {
-//        Chair chair = pic.getChair();
-//        for (Part chairPart : chair.getParts()) {
-//            if (!parts.contains(chairPart)) {
-//                return false;
-//            }
-//        }
-//        return true;
-//    }
-
 
     @Override
     public int compareTo(Player otherPlayer) {
@@ -236,5 +227,15 @@ public class Player implements Comparable<Player> {
         } else if (rank < otherPlayer.getRank()) {
             return -1;
         } else return type.compare(otherPlayer.getType());
+    }
+
+    public boolean couldSitHere(PlayerInChair foundPIC) {
+        Chair chair = foundPIC.getChair();
+        for (Part part : chair.getAllParts()) {
+            if (!this.getAllInstruments().contains(part.getInstrument())) {
+                return false;
+            }
+        }
+        return true;
     }
 }

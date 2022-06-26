@@ -22,7 +22,7 @@ public class PlayerInChairSorter {
             if (pic.getChair().getPrimaryPart().isPrincipalHorn()) {
                 principalIndex = pics.indexOf(pic);
             }
-            if (pic.getChair().hasAssDesignate()) {
+            if (pic.getChair().getPrimaryPart().hasAssDesignate()) {
                 assistantIndex = pics.indexOf(pic);
                 assistantExists = true;
             }

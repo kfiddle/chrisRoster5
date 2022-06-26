@@ -10,7 +10,18 @@ public class Part implements Comparable<Part> {
 
     @ManyToOne
     private Instrument instrument;
+
     private int rank;
+
+    private String specialDesignate;
+
+    public Part() {
+    }
+
+    public Part(Instrument instrument, int rank) {
+        this.instrument = instrument;
+        this.rank = rank;
+    }
 
     public void setInstrument(Instrument instrument) {
         this.instrument = instrument;
@@ -18,6 +29,10 @@ public class Part implements Comparable<Part> {
 
     public void setRank(int rank) {
         this.rank = rank;
+    }
+
+    public void setSpecialDesignate(String specialDesignate) {
+        this.specialDesignate = specialDesignate;
     }
 
     public Instrument getInstrument() {
@@ -28,8 +43,16 @@ public class Part implements Comparable<Part> {
         return rank;
     }
 
+    public String getSpecialDesignate() {
+        return specialDesignate;
+    }
+
     public boolean isPrincipalHorn() {
         return instrument.getName().equals("HORN") && rank == 1;
+    }
+
+    public boolean hasAssDesignate() {
+        return specialDesignate != null;
     }
 
     @Override
@@ -38,6 +61,8 @@ public class Part implements Comparable<Part> {
             return instrument.compareTo(next.getInstrument());
         } else return Integer.compare(rank, next.getRank());
     }
+
+
 }
 
 //    public int compareTo(Chair next) {

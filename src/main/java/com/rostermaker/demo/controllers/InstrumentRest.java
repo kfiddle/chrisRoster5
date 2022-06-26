@@ -19,10 +19,15 @@ public class InstrumentRest {
     private InstrumentRepo instrumentRepo;
 
     @RequestMapping("/get-all-instruments")
-    public List<Instrument> getAllInstruments() {
+    public List<String> getAllInstruments() {
         List<Instrument> allInsts = (List<Instrument>) instrumentRepo.findAll();
+        List<String> instNames = new ArrayList<>();
+
         Collections.sort(allInsts);
-        return allInsts;
+        for (Instrument instrument : allInsts) {
+            instNames.add(instrument.getName());
+        }
+        return instNames;
     }
 
     @PostMapping("add-instrument")

@@ -15,7 +15,7 @@ public class PlayerBuilder {
 
     public Instrument primaryInstrument;
     public int rank;
-    public Collection<Instrument> otherInstruments;
+    public Collection<Instrument> otherInstruments = new ArrayList<>();
 
     public String firstNameArea;
     public String lastName;
