@@ -18,8 +18,16 @@ public class InstrumentRest {
     @Resource
     private InstrumentRepo instrumentRepo;
 
+
     @RequestMapping("/get-all-instruments")
-    public List<String> getAllInstruments() {
+    public List<Instrument> getAllInstruments() {
+        List<Instrument> allInsts = (List<Instrument>) instrumentRepo.findAll();
+        Collections.sort(allInsts);
+        return allInsts;
+    }
+
+    @RequestMapping("/get-all-instruments-names")
+    public List<String> getAllInstrumentNames() {
         List<Instrument> allInsts = (List<Instrument>) instrumentRepo.findAll();
         List<String> instNames = new ArrayList<>();
 
