@@ -13,6 +13,7 @@ public class Instrument implements Comparable<Instrument> {
     private Long id;
 
     private String name;
+    private String abbreviation;
 
     private int scoreOrder;
 
@@ -28,6 +29,17 @@ public class Instrument implements Comparable<Instrument> {
         this.scoreOrder = scoreOrder;
     }
 
+    public Instrument(String name, String abbreviation, int scoreOrder) {
+        this.name = name;
+        this.abbreviation = abbreviation;
+        this.scoreOrder = scoreOrder;
+    }
+
+    public Instrument(String name, String abbreviation) {
+        this.name = name;
+        this.abbreviation = abbreviation;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -36,12 +48,20 @@ public class Instrument implements Comparable<Instrument> {
         this.scoreOrder = scoreOrder;
     }
 
+    public void setAbbreviation(String abbreviation) {
+        this.abbreviation = abbreviation;
+    }
+
     public Long getId() {
         return id;
     }
 
     public String getName() {
         return name;
+    }
+
+    public String getAbbreviation() {
+        return abbreviation;
     }
 
     public int getScoreOrder() {

@@ -231,7 +231,7 @@ public class Player implements Comparable<Player> {
 
     public boolean couldSitHere(PlayerInChair foundPIC) {
         Chair chair = foundPIC.getChair();
-        for (Part part : chair.getAllParts()) {
+        for (Part part : chair.getParts()) {
             if (!this.getAllInstruments().contains(part.getInstrument())) {
                 return false;
             }

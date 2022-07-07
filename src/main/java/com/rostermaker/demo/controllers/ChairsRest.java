@@ -68,6 +68,7 @@ public class ChairsRest {
     }
 
 
+
     @PostMapping("/add-empty-chairs/{pieceId}")
     public Optional<Piece> addFullOrchestration(@PathVariable Long pieceId, @RequestBody Collection<Chair> incomingChairs) throws IOException {
         Optional<Piece> pieceCheck = pieceRepo.findById(pieceId);
@@ -78,8 +79,9 @@ public class ChairsRest {
 
                 for (Chair chair : incomingChairs) {
                     Chair chairToSave = new ChairBuilder()
-                            .primaryPart(chair.getPrimaryPart())
-                            .otherParts(chair.getOtherParts())
+//                            .primaryPart(chair.getPrimaryPart())
+//                            .otherParts(chair.getOtherParts())
+                            .parts(chair.getParts())
                             .piece(pieceForChairs)
                             .build();
                     chairRepo.save(chairToSave);
@@ -106,8 +108,9 @@ public class ChairsRest {
             if (pieceCheck.isPresent()) {
                 Piece pieceForChair = pieceCheck.get();
                 Chair chairToSave = new ChairBuilder()
-                        .primaryPart(incomingChair.getPrimaryPart())
-                        .otherParts(incomingChair.getOtherParts())
+                        .parts(incomingChair.getParts())
+//                        .primaryPart(incomingChair.getPrimaryPart())
+//                        .otherParts(incomingChair.getOtherParts())
                         .piece(pieceForChair)
                         .build();
 
@@ -134,8 +137,10 @@ public class ChairsRest {
                 Show showForChair = showCheck.get();
 
                 Chair chairToSave = new ChairBuilder()
-                        .primaryPart(incomingChair.getPrimaryPart())
-                        .otherParts(incomingChair.getOtherParts())
+                        .parts(incomingChair.getParts())
+
+//                        .primaryPart(incomingChair.getPrimaryPart())
+//                        .otherParts(incomingChair.getOtherParts())
                         .show(showForChair)
                         .build();
                 chairRepo.save(chairToSave);
@@ -295,8 +300,11 @@ public class ChairsRest {
                 Part partToReference = new Part(sectionAndNumber.getInstrument(), 1);
                 if (chairRepo.existsByPrimaryPartAndPiece(partToReference, retrievedShowPiece.getPiece())) {
                     for (int seat = 2; seat <= sectionAndNumber.getRank(); seat++) {
-                        Part part = new Part(sectionAndNumber.getInstrument(), seat);
-                        Chair chair = new ChairBuilder().primaryPart(part).piece(retrievedShowPiece.getPiece()).build();
+//                        Part part = new Part(sectionAndNumber.getInstrument(), seat);
+                        List<Part> parts = Collections.singletonList(new Part(sectionAndNumber.getInstrument(), seat));
+
+//                        Chair chair = new ChairBuilder().primaryPart(part).piece(retrievedShowPiece.getPiece()).build();
+                        Chair chair = new ChairBuilder().parts(parts).piece(retrievedShowPiece.getPiece()).build();
                         picRepo.save(new PlayerInChair(retrievedShowPiece, chair));
                     }
                 }
@@ -320,8 +328,11 @@ public class ChairsRest {
                 Part partToReference = new Part(sectionAndNumber.getInstrument(), 1);
                 if (chairRepo.existsByPrimaryPartAndShow(partToReference, retrievedShow)) {
                     for (int seat = 1; seat < sectionAndNumber.getRank(); seat++) {
-                        Part part = new Part(sectionAndNumber.getInstrument(), seat);
-                        Chair chair = new ChairBuilder().primaryPart(part).show(retrievedShow).build();
+//                        Part part = new Part(sectionAndNumber.getInstrument(), seat);
+                        List<Part> parts = Collections.singletonList(new Part(sectionAndNumber.getInstrument(), seat));
+
+//                        Chair chair = new ChairBuilder().primaryPart(part).show(retrievedShow).build();
+                        Chair chair = new ChairBuilder().parts(parts).show(retrievedShow).build();
                         picRepo.save(new PlayerInChair(retrievedShow, chair));
                     }
                     return sectionAndNumber;

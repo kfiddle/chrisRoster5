@@ -14,10 +14,11 @@ public class ChairBuilder {
     public Piece piece;
     public Show show;
 
-    public Part primaryPart;
+//    public Part primaryPart;
+//
+//    public List<Part> otherParts = new ArrayList<>();
 
-    public List<Part> otherParts = new ArrayList<>();
-
+    public List<Part> parts = new ArrayList<>();
 
     public ChairBuilder() {
     }
@@ -34,21 +35,29 @@ public class ChairBuilder {
         return this;
     }
 
-
-
-
-
-    public ChairBuilder primaryPart(Part part) {
-        Optional<Part> primaryOpt = Optional.ofNullable(part);
-        primaryOpt.ifPresent(gotten -> this.primaryPart = gotten);
+    public ChairBuilder part(Part part) {
+        Optional<Part> partOpt = Optional.ofNullable(part);
+        partOpt.ifPresent(gotten -> this.parts.add(gotten));
         return this;
     }
 
-    public ChairBuilder otherParts(List<Part> parts) {
+    public ChairBuilder parts(List<Part> parts) {
         Optional<List<Part>> partsOpt = Optional.ofNullable(parts);
-        partsOpt.ifPresent(gotten -> this.otherParts = gotten);
+        partsOpt.ifPresent(partList -> this.parts = partList);
         return this;
     }
+
+//    public ChairBuilder primaryPart(Part part) {
+//        Optional<Part> primaryOpt = Optional.ofNullable(part);
+//        primaryOpt.ifPresent(gotten -> this.primaryPart = gotten);
+//        return this;
+//    }
+//
+//    public ChairBuilder otherParts(List<Part> parts) {
+//        Optional<List<Part>> partsOpt = Optional.ofNullable(parts);
+//        partsOpt.ifPresent(gotten -> this.otherParts = gotten);
+//        return this;
+//    }
 
     public Chair build() {
         return new Chair(this);
