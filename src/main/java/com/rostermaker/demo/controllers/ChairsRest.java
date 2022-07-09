@@ -35,6 +35,9 @@ public class ChairsRest {
     ShowPieceRepo showPieceRepo;
 
     @Resource
+    InstrumentRepo instrumentRepo;
+
+    @Resource
     ChairRepo chairRepo;
 
     @Resource
@@ -68,7 +71,6 @@ public class ChairsRest {
     }
 
 
-
     @PostMapping("/add-empty-chairs/{pieceId}")
     public Optional<Piece> addFullOrchestration(@PathVariable Long pieceId, @RequestBody Collection<Chair> incomingChairs) throws IOException {
         Optional<Piece> pieceCheck = pieceRepo.findById(pieceId);
@@ -78,6 +80,14 @@ public class ChairsRest {
                 Piece pieceForChairs = pieceCheck.get();
 
                 for (Chair chair : incomingChairs) {
+                    List<Part> partsInNewChair = new ArrayList<>();
+//
+//                    for (Part part : chair.getParts()) {
+//                        if (instrumentRepo.existsByName())
+//                    }
+
+
+
                     Chair chairToSave = new ChairBuilder()
 //                            .primaryPart(chair.getPrimaryPart())
 //                            .otherParts(chair.getOtherParts())
@@ -98,6 +108,21 @@ public class ChairsRest {
             error.printStackTrace();
         }
         return pieceCheck;
+    }
+
+
+    @PostMapping("/add-chairs-to-piece/{pieceId}")
+    public Collection<Chair> addChairs(@RequestBody Collection<Chair> incomingChairs, @PathVariable Long pieceId) throws IOException {
+        try {
+
+            System.out.println(incomingChairs.size());
+
+
+        } catch (Exception error) {
+            error.printStackTrace();
+        }
+
+        return incomingChairs;
     }
 
     @PostMapping("/add-chair-to-piece")
@@ -345,31 +370,6 @@ public class ChairsRest {
     }
 
 
-//    @PostMapping("/make-string-player-in-chairs/{showPieceId}")
-//    public void makeStringPICs(@RequestBody Collection<StringPartNum> incomingStringNumbers, @PathVariable Long showPieceId) throws IOException {
-//
-//        try {
-//            Optional<ShowPiece> showPieceToFind = showPieceRepo.findById(showPieceId);
-//            if (showPieceToFind.isPresent()) {
-//                ShowPiece retrievedShowPiece = showPieceToFind.get();
-//
-//                for (StringPartNum stringPartNum : incomingStringNumbers) {
-//                    if (chairRepo.existsByPrimaryPartAndPiece(stringPartNum.stringPart, retrievedShowPiece.getPiece())) {
-//                        Chair chairToReference = chairRepo.findByPrimaryPartAndPiece(stringPartNum.stringPart, retrievedShowPiece.getPiece());
-//                        for (int seat = 1; seat <= stringPartNum.number; seat++) {
-//                            picRepo.save(new PlayerInChair(retrievedShowPiece, chairToReference, seat));
-//                        }
-//                    }
-//                }
-//            }
-//        } catch (
-//                Exception error) {
-//            error.printStackTrace();
-//
-//        }
-//    }
-
-
     @PostMapping("/change-seating")
     public Collection<PlayerInChair> changeSeatingOrder(@RequestBody Collection<PlayerInChair> pics) {
 
@@ -397,7 +397,6 @@ public class ChairsRest {
         return null;
 
     }
-
 
 
 }

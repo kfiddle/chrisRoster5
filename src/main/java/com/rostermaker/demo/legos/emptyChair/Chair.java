@@ -39,6 +39,7 @@ public class Chair implements Comparable<Chair> {
         this.piece = chairBuilder.piece;
         this.show = chairBuilder.show;
         this.parts = chairBuilder.parts;
+        primaryPart = parts.get(0);
 //        this.primaryPart = chairBuilder.primaryPart;
 //        this.otherParts = chairBuilder.otherParts;
     }
