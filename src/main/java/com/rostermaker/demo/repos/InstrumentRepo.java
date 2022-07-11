@@ -9,4 +9,10 @@ public interface InstrumentRepo extends CrudRepository<Instrument, Long> {
 
 
     boolean existsByName(String name);
+
+    boolean existsByAbbreviation(String abbreviation);
+
+    Instrument findByAbbreviation(String abbreviation);
+
+    Instrument findByName(String name);
 }

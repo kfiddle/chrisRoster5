@@ -45,6 +45,7 @@ public class Populator implements CommandLineRunner {
     HorlogeRepo horlogeRepo;
 
 
+
     @Override
     public void run(String... args) throws Exception {
 
@@ -96,7 +97,7 @@ public class Populator implements CommandLineRunner {
         Instrument drumset = new Instrument("DRUMSET", 270);
         Instrument harp = new Instrument("HARP", 280);
         Instrument piano = new Instrument("PIANO", 290);
-        Instrument celeste = new Instrument("CELEST", 300);
+        Instrument celeste = new Instrument("CELESTE", 300);
         Instrument keyboard = new Instrument("KEYBOARD", 310);
         Instrument glock = new Instrument("GLOCKENSPIEL", 320);
         Instrument organ = new Instrument("ORGAN", 330);

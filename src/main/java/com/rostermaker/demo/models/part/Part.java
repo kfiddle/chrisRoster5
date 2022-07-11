@@ -18,6 +18,10 @@ public class Part implements Comparable<Part> {
     public Part() {
     }
 
+    public Part(Instrument inst) {
+        this.instrument = inst;
+    }
+
     public Part(Instrument instrument, int rank) {
         this.instrument = instrument;
         this.rank = rank;

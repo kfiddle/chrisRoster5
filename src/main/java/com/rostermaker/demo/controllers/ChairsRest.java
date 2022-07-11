@@ -6,9 +6,9 @@ import com.rostermaker.demo.legos.emptyChair.Chair;
 import com.rostermaker.demo.legos.emptyChair.ChairBuilder;
 import com.rostermaker.demo.legos.playerInChair.PlayerInChair;
 import com.rostermaker.demo.legos.playerInChair.PlayerInChairSorter;
+import com.rostermaker.demo.models.instrument.Instrument;
 import com.rostermaker.demo.models.part.Part;
 import com.rostermaker.demo.models.piece.Piece;
-import com.rostermaker.demo.models.piece.StringPartNum;
 import com.rostermaker.demo.models.player.Player;
 import com.rostermaker.demo.models.show.Show;
 import com.rostermaker.demo.repos.*;
@@ -42,6 +42,7 @@ public class ChairsRest {
 
     @Resource
     PlayerRepo playerRepo;
+
 
     @RequestMapping("/get-pics-in-show-piece")
     public Collection<PlayerInChair> getAllChairsInAPieceOnShow(@RequestBody ShowPiece incomingShowPiece) {
@@ -81,17 +82,25 @@ public class ChairsRest {
 
                 for (Chair chair : incomingChairs) {
                     List<Part> partsInNewChair = new ArrayList<>();
-//
-//                    for (Part part : chair.getParts()) {
-//                        if (instrumentRepo.existsByName())
-//                    }
 
+                    for (Part part : chair.getParts()) {
+                        String abbreviation = part.getInstrument().getAbbreviation();
 
+                        if (instrumentRepo.existsByAbbreviation(abbreviation)) {
+                            Instrument inst = instrumentRepo.findByAbbreviation(abbreviation);
+
+                            Part partToAdd = new Part(inst);
+                            if (part.getRank() > 0) {
+                                partToAdd.setRank(part.getRank());
+                            } else if (part.getSpecialDesignate() != null) {
+                                partToAdd.setSpecialDesignate(part.getSpecialDesignate());
+                            }
+                            partsInNewChair.add(partToAdd);
+                        }
+                    }
 
                     Chair chairToSave = new ChairBuilder()
-//                            .primaryPart(chair.getPrimaryPart())
-//                            .otherParts(chair.getOtherParts())
-                            .parts(chair.getParts())
+                            .parts(partsInNewChair)
                             .piece(pieceForChairs)
                             .build();
                     chairRepo.save(chairToSave);
