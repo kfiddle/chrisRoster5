@@ -51,6 +51,16 @@ public class ChairsRest {
             List<PlayerInChair> picsToReturn = (List<PlayerInChair>) picRepo.findAllByShowPiece(showPieceToFind.get());
             Collections.sort(picsToReturn);
             PlayerInChairSorter sorter = new PlayerInChairSorter(picsToReturn);
+            List<PlayerInChair> sortedPics = sorter.sort();
+
+            for (PlayerInChair pic : sortedPics) {
+                Part part = pic.getChair().getPrimaryPart();
+                String instName = part.getInstrument().getName();
+                int instRank = part.getRank();
+                String assist = part.getSpecialDesignate();
+                System.out.println(instName + "   " + instRank + "   " + assist);
+            }
+
             return sorter.sort();
         }
         return null;
@@ -95,6 +105,8 @@ public class ChairsRest {
                             } else if (part.getSpecialDesignate() != null) {
                                 partToAdd.setSpecialDesignate(part.getSpecialDesignate());
                             }
+
+                            System.out.println(partToAdd.getInstrument().getName() + "    " + partToAdd.getRank() + "   " + partToAdd.getSpecialDesignate());
                             partsInNewChair.add(partToAdd);
                         }
                     }
