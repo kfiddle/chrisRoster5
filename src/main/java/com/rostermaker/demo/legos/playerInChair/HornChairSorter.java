@@ -2,13 +2,14 @@ package com.rostermaker.demo.legos.playerInChair;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
-public class PlayerInChairSorter {
+public class HornChairSorter {
 
     Collection<PlayerInChair> picsToSort;
 
-    public PlayerInChairSorter(Collection<PlayerInChair> picsToSort) {
+    public HornChairSorter(Collection<PlayerInChair> picsToSort) {
         this.picsToSort = picsToSort;
     }
 
@@ -29,8 +30,7 @@ public class PlayerInChairSorter {
         }
 
         if (assistantExists) {
-            pics.add(principalIndex + 1, pics.get(assistantIndex));
-            pics.remove(assistantIndex + 1);
+            Collections.swap(pics, principalIndex, assistantIndex);
         }
         return pics;
     }

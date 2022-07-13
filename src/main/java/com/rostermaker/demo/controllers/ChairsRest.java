@@ -5,7 +5,7 @@ import com.rostermaker.demo.legos.ShowPiece;
 import com.rostermaker.demo.legos.emptyChair.Chair;
 import com.rostermaker.demo.legos.emptyChair.ChairBuilder;
 import com.rostermaker.demo.legos.playerInChair.PlayerInChair;
-import com.rostermaker.demo.legos.playerInChair.PlayerInChairSorter;
+import com.rostermaker.demo.legos.playerInChair.HornChairSorter;
 import com.rostermaker.demo.models.instrument.Instrument;
 import com.rostermaker.demo.models.part.Part;
 import com.rostermaker.demo.models.piece.Piece;
@@ -50,7 +50,7 @@ public class ChairsRest {
         if (showPieceToFind.isPresent()) {
             List<PlayerInChair> picsToReturn = (List<PlayerInChair>) picRepo.findAllByShowPiece(showPieceToFind.get());
             Collections.sort(picsToReturn);
-            PlayerInChairSorter sorter = new PlayerInChairSorter(picsToReturn);
+            HornChairSorter sorter = new HornChairSorter(picsToReturn);
             List<PlayerInChair> sortedPics = sorter.sort();
 
             for (PlayerInChair pic : sortedPics) {
@@ -74,7 +74,7 @@ public class ChairsRest {
             List<PlayerInChair> picsToReturn = (List<PlayerInChair>) picRepo.findAllByShow(showToFind.get());
             Collections.sort(picsToReturn);
 
-            PlayerInChairSorter sorter = new PlayerInChairSorter(picsToReturn);
+            HornChairSorter sorter = new HornChairSorter(picsToReturn);
             return sorter.sort();
         }
 
