@@ -45,6 +45,12 @@ public class ChairsRest {
     PlayerRepo playerRepo;
 
 
+    @RequestMapping("/get-all-pics")
+    public Collection<PlayerInChair> getAllPics() {
+        return (Collection<PlayerInChair>) picRepo.findAll();
+    }
+
+
     @RequestMapping("/get-pics-in-show-piece")
     public Collection<PlayerInChair> getAllChairsInAPieceOnShow(@RequestBody ShowPiece incomingShowPiece) {
         Optional<ShowPiece> showPieceToFind = showPieceRepo.findById(incomingShowPiece.getId());
@@ -70,15 +76,15 @@ public class ChairsRest {
     @RequestMapping("/get-pics-in-show")
     public Collection<PlayerInChair> getAllChairsInShow(@RequestBody Show incomingShow) {
         Optional<Show> showToFind = showRepo.findById(incomingShow.getId());
-
         if (showToFind.isPresent()) {
             List<PlayerInChair> picsToReturn = (List<PlayerInChair>) picRepo.findAllByShow(showToFind.get());
-            Collections.sort(picsToReturn);
 
+            System.out.println("We are in an actual list ...  " + picsToReturn.size());
+
+            Collections.sort(picsToReturn);
             HornChairSorter sorter = new HornChairSorter(picsToReturn);
             return sorter.sort();
         }
-
         return null;
     }
 
@@ -101,36 +107,36 @@ public class ChairsRest {
 
         List<Part> partsInNewChair = new ArrayList<>();
         for (Part part : incomingChair.getParts()) {
-            if (instrumentRepo.existsByName(part.getInstrument().getName())) {
-                Instrument inst = instrumentRepo.findByName(part.getInstrument().getName());
-                Part partToAdd = new Part(inst);
-                if (part.getRank() > 0) {
-                    partToAdd.setRank(part.getRank());
-                } else if (part.getSpecialDesignate() != null) {
-                    partToAdd.setSpecialDesignate(part.getSpecialDesignate());
-                }
+            Instrument inst;
+            if (part.getInstrument().getName() != null) {
+                inst = instrumentRepo.findByName(part.getInstrument().getName());
+            } else {
+                inst = instrumentRepo.findByAbbreviation(part.getInstrument().getAbbreviation());
+            }
 
-                partsInNewChair.add(partToAdd);
+            Part partToAdd = new Part(inst);
+            if (part.getRank() > 0) {
+                partToAdd.setRank(part.getRank());
+            } else if (part.getSpecialDesignate() != null) {
+                partToAdd.setSpecialDesignate(part.getSpecialDesignate());
+            }
 
-                chairToSave = new ChairBuilder()
-                        .parts(partsInNewChair)
-                        .piece(piece)
-                        .show(show)
-                        .build();
-                chairRepo.save(chairToSave);
-                System.out.println(chairToSave.getPrimaryPart().getInstrument().getName());
-                System.out.println(chairToSave.getPrimaryPart().getRank());
-                if (chairToSave.getPiece() != null) {
-                    System.out.println(chairToSave.getPiece().getTitle());
-                }
-                if (chairToSave.getShow() != null) {
-                    System.out.println(chairToSave.getShow().getTitle());
-                }
+            partsInNewChair.add(partToAdd);
 
-                if (piece != null && showPieceRepo.existsByPiece(piece)) {
-                    for (ShowPiece showPiece : showPieceRepo.findAllByPiece(piece)) {
-                        picRepo.save(new PlayerInChair(showPiece, chairToSave));
-                    }
+            chairToSave = new ChairBuilder()
+                    .parts(partsInNewChair)
+                    .piece(piece)
+                    .show(show)
+                    .build();
+            chairRepo.save(chairToSave);
+
+            if (chairToSave.getShow() != null) {
+                picRepo.save(new PlayerInChair(show, chairToSave));
+            }
+
+            if (piece != null && showPieceRepo.existsByPiece(piece)) {
+                for (ShowPiece showPiece : showPieceRepo.findAllByPiece(piece)) {
+                    picRepo.save(new PlayerInChair(showPiece, chairToSave));
                 }
             }
         }

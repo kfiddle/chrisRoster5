@@ -29,9 +29,6 @@ public class Chair implements Comparable<Chair> {
     @ElementCollection
     private List<Part> parts = new ArrayList<>();
 
-//    @ElementCollection
-//    private List<Part> otherParts = new ArrayList<>();
-
     public Chair() {
     }
 
@@ -40,8 +37,6 @@ public class Chair implements Comparable<Chair> {
         this.show = chairBuilder.show;
         this.parts = chairBuilder.parts;
         primaryPart = parts.get(0);
-//        this.primaryPart = chairBuilder.primaryPart;
-//        this.otherParts = chairBuilder.otherParts;
     }
 
 
@@ -53,19 +48,10 @@ public class Chair implements Comparable<Chair> {
         this.show = show;
     }
 
-//    public void setOtherParts(List<Part> parts) {
-//        otherParts = parts;
-//        primaryPart = parts.get(0);
-//    }
-
     public void setParts(List<Part> parts) {
         this.parts = parts;
         this.primaryPart = parts.get(0);
     }
-
-//    public void setPrimaryPart(Part primaryPart) {
-//        this.primaryPart = primaryPart;
-//    }
 
     public Long getId() {
         return id;
@@ -79,20 +65,9 @@ public class Chair implements Comparable<Chair> {
         return show;
     }
 
-//    public List<Part> getOtherParts() {
-//        return otherParts;
-//    }
-
-
     public List<Part> getParts() {
         return parts;
     }
-
-//    public Collection<Part> getAllParts() {
-//        Collection<Part> allParts = otherParts;
-//        allParts.add(primaryPart);
-//        return allParts;
-//    }
 
     public Part getPrimaryPart() {
         return primaryPart;
