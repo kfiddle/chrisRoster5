@@ -66,8 +66,8 @@ public class PieceRest {
             Optional<Piece> pieceToFind = pieceRepo.findById(incoming.getId());
             if (pieceToFind.isPresent()) {
                 Piece pieceToEdit = pieceToFind.get();
-                PieceEditor editor = new PieceEditor(pieceToEdit);
-                editor.editFrom(incoming);
+                PieceEditor editor = new PieceEditor();
+                pieceRepo.save(editor.editFrom(incoming, pieceToEdit));
             }
             return (Collection<Piece>) pieceRepo.findAll();
 

@@ -1,18 +1,16 @@
 package com.rostermaker.demo.models.piece;
 
-
+import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.util.Optional;
 
+
 public class PieceEditor {
 
-    public Piece storedPiece;
-
-    public PieceEditor(Piece storedPiece) {
-        this.storedPiece = storedPiece;
+    public PieceEditor() {
     }
 
-    public void editFrom(Piece incoming) {
+    public Piece editFrom(Piece incoming, Piece storedPiece) {
         Optional<String> prefixOpt = Optional.ofNullable(incoming.getPrefix());
         Optional<String> libNumberOpt = Optional.ofNullable(incoming.getLibNumber());
         Optional<String> suffixOpt = Optional.ofNullable(incoming.getSuffix());
@@ -37,7 +35,7 @@ public class PieceEditor {
         titleOpt.ifPresent(gotten -> storedPiece.setTitle(incoming.getTitle()));
         publisherOpt.ifPresent(gotten -> storedPiece.setPublisher(incoming.getPublisher()));
         durationOpt.ifPresent(gotten -> storedPiece.setDuration(incoming.getDuration()));
-        instrumentationOpt.ifPresent(gotten -> storedPiece.setInstrumentation(incoming.getInstrumentation()));
+        instrumentationOpt.ifPresent(storedPiece::setInstrumentation);
         vocalistSoloistOpt.ifPresent(gotten -> storedPiece.setVocalistSoloist(incoming.getVocalistSoloist()));
         percBreakdownOpt.ifPresent(gotten -> storedPiece.setPercBreakdown(incoming.getPercBreakdown()));
         notesOpt.ifPresent(gotten -> storedPiece.setNotes(incoming.getNotes()));
@@ -45,7 +43,7 @@ public class PieceEditor {
         signOpt.ifPresent(gotten -> storedPiece.setSign(incoming.getSign()));
         updatedOpt.ifPresent(gotten -> storedPiece.setUpdated(incoming.getUpdated()));
 
-
+        return storedPiece;
     }
 
 
