@@ -21,7 +21,7 @@ public class Piece {
     private String otherName;
     private String publisher;
     private String duration;
-    private String instrumentation;
+    private String windsBrass;
     private String vocalistSoloist;
     private String percBreakdown;
     private String notes;
@@ -44,7 +44,7 @@ public class Piece {
         otherName = pieceBuilder.otherName;
         publisher = pieceBuilder.publisher;
         duration = pieceBuilder.duration;
-        instrumentation = pieceBuilder.instrumentation;
+        windsBrass = pieceBuilder.windsBrass;
         vocalistSoloist = pieceBuilder.vocalistSoloist;
         percBreakdown = pieceBuilder.percBreakdown;
         notes = pieceBuilder.notes;
@@ -89,8 +89,8 @@ public class Piece {
         this.duration = duration;
     }
 
-    public void setInstrumentation(String instrumentation) {
-        this.instrumentation = instrumentation;
+    public void setWindsBrass(String windsBrass) {
+        this.windsBrass = windsBrass;
     }
 
     public void setVocalistSoloist(String vocalistSoloist) {
@@ -161,8 +161,8 @@ public class Piece {
         return duration;
     }
 
-    public String getInstrumentation() {
-        return instrumentation;
+    public String getWindsBrass() {
+        return windsBrass;
     }
 
     public String getVocalistSoloist() {

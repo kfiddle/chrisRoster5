@@ -213,19 +213,19 @@ public class ChairsRest {
     }
 
 
-    @PostMapping("/add-chairs-to-piece/{pieceId}")
-    public Collection<Chair> addChairs(@RequestBody Collection<Chair> incomingChairs, @PathVariable Long pieceId) throws IOException {
-        try {
-
-            System.out.println(incomingChairs.size());
-
-
-        } catch (Exception error) {
-            error.printStackTrace();
-        }
-
-        return incomingChairs;
-    }
+//    @PostMapping("/add-chairs-to-piece/{pieceId}")
+//    public Collection<Chair> addChairs(@RequestBody Collection<Chair> incomingChairs, @PathVariable Long pieceId) throws IOException {
+//        try {
+//
+//            System.out.println(incomingChairs.size());
+//
+//
+//        } catch (Exception error) {
+//            error.printStackTrace();
+//        }
+//
+//        return incomingChairs;
+//    }
 
 //    @PostMapping("/add-chair-to-piece")
 //    public Optional<Piece> addChairToPiece(@RequestBody Chair incomingChair) throws IOException {

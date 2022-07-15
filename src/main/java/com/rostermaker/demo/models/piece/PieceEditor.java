@@ -19,7 +19,7 @@ public class PieceEditor {
         Optional<String> titleOpt = Optional.ofNullable(incoming.getTitle());
         Optional<String> publisherOpt = Optional.ofNullable(incoming.getPublisher());
         Optional<String> durationOpt = Optional.ofNullable(incoming.getDuration());
-        Optional<String> instrumentationOpt = Optional.ofNullable(incoming.getInstrumentation());
+        Optional<String> windsBrassOpt = Optional.ofNullable(incoming.getWindsBrass());
         Optional<String> vocalistSoloistOpt = Optional.ofNullable(incoming.getVocalistSoloist());
         Optional<String> percBreakdownOpt = Optional.ofNullable(incoming.getPercBreakdown());
         Optional<String> notesOpt = Optional.ofNullable(incoming.getNotes());
@@ -35,8 +35,8 @@ public class PieceEditor {
         titleOpt.ifPresent(gotten -> storedPiece.setTitle(incoming.getTitle()));
         publisherOpt.ifPresent(gotten -> storedPiece.setPublisher(incoming.getPublisher()));
         durationOpt.ifPresent(gotten -> storedPiece.setDuration(incoming.getDuration()));
-        instrumentationOpt.ifPresent(storedPiece::setInstrumentation);
-        vocalistSoloistOpt.ifPresent(gotten -> storedPiece.setVocalistSoloist(incoming.getVocalistSoloist()));
+        windsBrassOpt.ifPresent(storedPiece::setWindsBrass);
+        vocalistSoloistOpt.ifPresent(storedPiece::setVocalistSoloist);
         percBreakdownOpt.ifPresent(gotten -> storedPiece.setPercBreakdown(incoming.getPercBreakdown()));
         notesOpt.ifPresent(gotten -> storedPiece.setNotes(incoming.getNotes()));
         statusOpt.ifPresent(gotten -> storedPiece.setStatus(incoming.getStatus()));

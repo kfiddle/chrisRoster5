@@ -14,7 +14,7 @@ public class PieceBuilder {
     public String otherName;
     public String publisher;
     public String duration;
-    public String instrumentation;
+    public String windsBrass;
     public String vocalistSoloist;
     public String percBreakdown;
     public String notes;
@@ -79,9 +79,9 @@ public class PieceBuilder {
         return this;
     }
 
-    public PieceBuilder instrumentation(String instrumentation) {
-        Optional<String> instrumentationOpt = Optional.ofNullable(instrumentation);
-        instrumentationOpt.ifPresent(gotten -> this.instrumentation = gotten);
+    public PieceBuilder windsBrass(String windsBrass) {
+        Optional<String> windsBrassOpt = Optional.ofNullable(windsBrass);
+        windsBrassOpt.ifPresent(gotten -> this.windsBrass = gotten);
         return this;
     }
 

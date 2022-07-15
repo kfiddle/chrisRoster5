@@ -44,7 +44,7 @@ public class PieceRest {
                     .otherName(incoming.getOtherName())
                     .publisher(incoming.getPublisher())
                     .duration(incoming.getDuration())
-                    .instrumentation(incoming.getInstrumentation())
+                    .windsBrass(incoming.getWindsBrass())
                     .vocalistSoloist(incoming.getVocalistSoloist())
                     .percBreakdown(incoming.getPercBreakdown())
                     .notes(incoming.getNotes())
