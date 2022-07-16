@@ -8,9 +8,7 @@ import com.rostermaker.demo.models.instrument.Instrument;
 import com.rostermaker.demo.models.part.Part;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Entity
 public class Player implements Comparable<Player> {
@@ -31,7 +29,7 @@ public class Player implements Comparable<Player> {
 //    Collection<String> otherInstruments;
 
     @ManyToMany
-    private Collection<Instrument> otherInstruments = new ArrayList<>();
+    private List<Instrument> instruments = new ArrayList<>();
 
     private String firstNameArea;
     private String lastName;
@@ -54,8 +52,11 @@ public class Player implements Comparable<Player> {
     public Player(PlayerBuilder playerBuilder) {
         firstNameArea = playerBuilder.firstNameArea;
         lastName = playerBuilder.lastName;
+        instruments = playerBuilder.instruments;
+        if (instruments.size() > 0) {
+            primaryInstrument = instruments.get(0);
+        }
         type = playerBuilder.type;
-        primaryInstrument = playerBuilder.primaryInstrument;
         rank = playerBuilder.rank;
         email = playerBuilder.email;
         homePhone = playerBuilder.homePhone;
@@ -65,7 +66,7 @@ public class Player implements Comparable<Player> {
         city = playerBuilder.city;
         state = playerBuilder.state;
         zip = playerBuilder.zip;
-        otherInstruments = playerBuilder.otherInstruments;
+
 
         username = playerBuilder.username;
         password = playerBuilder.password;
@@ -85,8 +86,9 @@ public class Player implements Comparable<Player> {
         this.rank = rank;
     }
 
-    public void setOtherInstruments(Collection<Instrument> otherInstruments) {
-        this.otherInstruments = otherInstruments;
+    public void setInstruments(List<Instrument> instruments) {
+        this.instruments = instruments;
+        primaryInstrument = instruments.get(0);
     }
 
     public void setFirstNameArea(String firstNameArea) {
@@ -157,14 +159,8 @@ public class Player implements Comparable<Player> {
         return rank;
     }
 
-    public Collection<Instrument> getOtherInstruments() {
-        return otherInstruments;
-    }
-
-    public Collection<Instrument> getAllInstruments() {
-        Collection<Instrument> allPossibles = otherInstruments;
-        allPossibles.add(primaryInstrument);
-        return allPossibles;
+    public List<Instrument> getInstruments() {
+        return instruments;
     }
 
     public String getFirstNameArea() {
@@ -232,7 +228,7 @@ public class Player implements Comparable<Player> {
     public boolean couldSitHere(PlayerInChair foundPIC) {
         Chair chair = foundPIC.getChair();
         for (Part part : chair.getParts()) {
-            if (!this.getAllInstruments().contains(part.getInstrument())) {
+            if (!instruments.contains(part.getInstrument())) {
                 return false;
             }
         }

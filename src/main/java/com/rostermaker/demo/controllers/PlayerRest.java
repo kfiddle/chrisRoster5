@@ -15,6 +15,7 @@ import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin
@@ -40,11 +41,16 @@ public class PlayerRest {
                 return playerRepo.findByFirstNameAreaAndLastName(incomingPlayer.getFirstNameArea(), incomingPlayer.getLastName());
             } else {
 
+                List<Instrument> instsToAdd = new ArrayList<>();
+                for (Instrument inst : incomingPlayer.getInstruments()) {
+                    Optional<Instrument> instToFind = instrumentRepo.findById(inst.getId());
+                    instToFind.ifPresent(instsToAdd::add);
+                }
+
                 playerRepo.save(new PlayerBuilder().firstNameArea(incomingPlayer.getFirstNameArea())
                         .lastName(incomingPlayer.getLastName())
                         .type(incomingPlayer.getType())
-                        .primaryInstrument(incomingPlayer.getPrimaryInstrument())
-                        .otherInstruments(incomingPlayer.getOtherInstruments())
+                        .instruments(instsToAdd)
                         .rank(incomingPlayer.getRank())
                         .email(incomingPlayer.getEmail())
                         .homePhone(incomingPlayer.getHomePhone())
@@ -85,7 +91,7 @@ public class PlayerRest {
                 Instrument foundInst = instToFind.get();
                 Collection<Player> playersToSend = new ArrayList<>();
                 for (Player player : playerRepo.findAllByType(Type.SUB)) {
-                    for (Instrument inst : player.getAllInstruments()) {
+                    for (Instrument inst : player.getInstruments()) {
                         if (inst.equals(foundInst)) {
                             playersToSend.add(player);
                         }
@@ -105,8 +111,8 @@ public class PlayerRest {
             Optional<Player> playerToFind = playerRepo.findById(incomingPlayer.getId());
             if (playerToFind.isPresent()) {
                 Player playerToEdit = playerToFind.get();
-                PlayerEditor editor = new PlayerEditor(playerToEdit);
-                editor.editFrom(incomingPlayer);
+                PlayerEditor editor = new PlayerEditor();
+                playerRepo.save(editor.editFrom(incomingPlayer, playerToEdit));
             }
             return (Collection<Player>) playerRepo.findAll();
 

@@ -4,10 +4,7 @@ import com.rostermaker.demo.enums.Type;
 import com.rostermaker.demo.models.instrument.Instrument;
 
 import javax.persistence.ElementCollection;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class PlayerBuilder {
 
@@ -31,6 +28,7 @@ public class PlayerBuilder {
     public String username;
     public String password;
     public String role;
+    public List<Instrument> instruments = new ArrayList<>();
 
     public PlayerBuilder() {
     }
@@ -53,12 +51,6 @@ public class PlayerBuilder {
         return this;
     }
 
-    public PlayerBuilder primaryInstrument(Instrument primaryInstrument) {
-        Optional<Instrument> instOpt = Optional.ofNullable(primaryInstrument);
-        instOpt.ifPresent(gotten -> this.primaryInstrument = gotten);
-        return this;
-    }
-
     public PlayerBuilder rank(int rank) {
         if (rank > 0) {
             this.rank = rank;
@@ -66,15 +58,15 @@ public class PlayerBuilder {
         return this;
     }
 
-    public PlayerBuilder otherInstruments(Collection<Instrument> instruments) {
-        Optional<Collection<Instrument>> instOpt = Optional.ofNullable(instruments);
-        instOpt.ifPresent(gottenParts -> this.otherInstruments = gottenParts);
+    public PlayerBuilder instruments(List<Instrument> instruments) {
+        Optional<List<Instrument>> instOpt = Optional.ofNullable(instruments);
+        instOpt.ifPresent(gottenParts -> this.instruments = gottenParts);
         return this;
     }
 
     public PlayerBuilder addAnInstrument (Instrument instrument) {
         Optional<Instrument> partOpt = Optional.ofNullable(instrument);
-        partOpt.ifPresent(gotten -> this.otherInstruments.add(gotten));
+        partOpt.ifPresent(gotten -> this.instruments.add(gotten));
         return this;
     }
 
