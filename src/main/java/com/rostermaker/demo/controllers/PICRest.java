@@ -7,12 +7,12 @@ import com.rostermaker.demo.legos.playerInChair.HornPICSorter;
 import com.rostermaker.demo.legos.playerInChair.PIC;
 import com.rostermaker.demo.legos.playerInChair.PlayerInChair;
 import com.rostermaker.demo.models.part.Part;
+import com.rostermaker.demo.models.player.Player;
+import com.rostermaker.demo.models.show.Show;
 import com.rostermaker.demo.repos.PICRepo;
+import com.rostermaker.demo.repos.PlayerRepo;
 import com.rostermaker.demo.repos.ShowPieceRepo;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Collection;
@@ -29,6 +29,9 @@ public class PICRest {
 
     @Resource
     ShowPieceRepo showPieceRepo;
+
+    @Resource
+    PlayerRepo playerRepo;
 
 
     @RequestMapping("/get-all-new-pics")
@@ -56,4 +59,51 @@ public class PICRest {
         }
         return null;
     }
+
+    @PostMapping("/put-player-in-pic/{picId}")
+    public Optional<PIC> putAPlayerInAChair(@RequestBody Player incomingPlayer, @PathVariable Long
+            picId) {
+
+        try {
+            Optional<PIC> premadePIC = picRepo.findById(picId);
+            Optional<Player> playerToFind = playerRepo.findById(incomingPlayer.getId());
+            if (premadePIC.isPresent() && playerToFind.isPresent()) {
+                PIC pic = premadePIC.get();
+                Player foundPlayer = playerToFind.get();
+                boolean flagTest = false;
+
+                ShowPiece possibleShowPiece;
+                Show possibleShow;
+
+                if (pic.getShow() == null) {
+                    possibleShowPiece = pic.getShowPiece();
+                    for (PIC pic1 : picRepo.findAllByShowPiece(possibleShowPiece)) {
+                        if (pic1.hasThisPlayer(foundPlayer)) {
+                            flagTest = true;
+                        }
+                    }
+                } else {
+                    possibleShow = pic.getShow();
+                    for (PIC pic2 : picRepo.findAllByShow(possibleShow)) {
+                        if (pic2.hasThisPlayer(foundPlayer)) {
+                            flagTest = true;
+                        }
+                    }
+                }
+
+                if (!flagTest) {
+                    pic.setPlayer(foundPlayer);
+                    picRepo.save(pic);
+                    return premadePIC;
+                }
+
+            }
+        } catch (
+                Exception error) {
+            error.printStackTrace();
+
+        }
+        return Optional.empty();
+    }
+
 }
