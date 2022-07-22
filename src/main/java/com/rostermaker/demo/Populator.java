@@ -4,7 +4,10 @@ package com.rostermaker.demo;
 import com.rostermaker.demo.enums.Event;
 import com.rostermaker.demo.enums.Type;
 import com.rostermaker.demo.legos.ShowPiece;
+import com.rostermaker.demo.legos.emptyChair.Chair;
+import com.rostermaker.demo.legos.emptyChair.ChairBuilder;
 import com.rostermaker.demo.models.instrument.Instrument;
+import com.rostermaker.demo.models.part.Part;
 import com.rostermaker.demo.models.piece.Piece;
 import com.rostermaker.demo.models.piece.PieceBuilder;
 import com.rostermaker.demo.models.player.Player;
@@ -43,6 +46,9 @@ public class Populator implements CommandLineRunner {
 
     @Resource
     HorlogeRepo horlogeRepo;
+
+    @Resource
+    ChairRepo chairRepo;
 
 
 
@@ -242,6 +248,13 @@ public class Populator implements CommandLineRunner {
         ShowPiece laMerOnFirst = new ShowPiece(laMer, sym2, 2);
 
         showPieceRepo.saveAll(Arrays.asList(diamondOnFirst, poulencOnFirst, laMerOnFirst));
+
+//        Chair firstChair = new ChairBuilder().part(new Part(flute, 1)).piece(diamond).build();
+//        chairRepo.save(firstChair);
+//
+//        for (Part part : firstChair.getParts()) {
+//            System.out.println(part.getInstrument().getName() + "     " + 1);
+//        }
 
 
     }

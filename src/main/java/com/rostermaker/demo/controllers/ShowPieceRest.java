@@ -2,13 +2,12 @@ package com.rostermaker.demo.controllers;
 
 import com.rostermaker.demo.legos.ShowPiece;
 import com.rostermaker.demo.legos.emptyChair.Chair;
+import com.rostermaker.demo.legos.playerInChair.PICBuilder;
 import com.rostermaker.demo.legos.playerInChair.PlayerInChair;
+import com.rostermaker.demo.legos.scoreline.ScoreLine;
 import com.rostermaker.demo.models.piece.Piece;
 import com.rostermaker.demo.models.show.Show;
-import com.rostermaker.demo.repos.ChairRepo;
-import com.rostermaker.demo.repos.PlayerInChairRepo;
-import com.rostermaker.demo.repos.ShowPieceRepo;
-import com.rostermaker.demo.repos.ShowRepo;
+import com.rostermaker.demo.repos.*;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -26,10 +25,16 @@ public class ShowPieceRest {
     ShowRepo showRepo;
 
     @Resource
+    ScoreLineRepo scoreLineRepo;
+
+    @Resource
     ChairRepo chairRepo;
 
     @Resource
     PlayerInChairRepo picRepo;
+
+    @Resource
+    PICRepo betterPICRepo;
 
     @RequestMapping("/get-all-show-pieces")
     public Collection<ShowPiece> getAllShowPieces() {
@@ -40,6 +45,12 @@ public class ShowPieceRest {
         ShowPiece newShowPiece = new ShowPiece(showPieceToAdd.getPiece(), showPieceToAdd.getShow(), showPieceToAdd.getOrderNum());
         showPieceRepo.save(newShowPiece);
 
+
+        if (scoreLineRepo.existsByPiece(newShowPiece.getPiece())) {
+            for (ScoreLine scoreLine : scoreLineRepo.findAllByPiece(newShowPiece.getPiece())) {
+                betterPICRepo.save(new PICBuilder().showPiece(newShowPiece).fromScoreLine(scoreLine).build());
+            }
+        }
 
         if (chairRepo.existsByPiece(newShowPiece.getPiece())) {
             for (Chair chair : chairRepo.findAllByPiece(newShowPiece.getPiece())) {

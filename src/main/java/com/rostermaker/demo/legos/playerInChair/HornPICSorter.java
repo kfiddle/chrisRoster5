@@ -5,26 +5,25 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class HornChairSorter {
+public class HornPICSorter {
 
-    Collection<PlayerInChair> picsToSort;
-    Collection<PIC> newPicsToSort;
+    Collection<PIC> picsToSort;
 
-    public HornChairSorter(Collection<PlayerInChair> picsToSort) {
+    public HornPICSorter(Collection<PIC> picsToSort) {
         this.picsToSort = picsToSort;
     }
 
-    public List<PlayerInChair> sort() {
-        ArrayList<PlayerInChair> pics = new ArrayList<PlayerInChair>(picsToSort);
+    public List<PIC> sort() {
+        ArrayList<PIC> pics = new ArrayList<PIC>(picsToSort);
 
         int assistantIndex = 0;
         int principalIndex = 0;
         boolean assistantExists = false;
-        for (PlayerInChair pic : pics) {
-            if (pic.getChair().getPrimaryPart().isPrincipalHorn()) {
+        for (PIC pic : pics) {
+            if (pic.getPrimaryPart().isPrincipalHorn()) {
                 principalIndex = pics.indexOf(pic);
             }
-            if (pic.getChair().getPrimaryPart().hasAssDesignate()) {
+            if (pic.getPrimaryPart().hasAssDesignate()) {
                 assistantIndex = pics.indexOf(pic);
                 assistantExists = true;
             }

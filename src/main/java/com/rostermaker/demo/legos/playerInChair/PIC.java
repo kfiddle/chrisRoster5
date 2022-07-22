@@ -1,19 +1,18 @@
 package com.rostermaker.demo.legos.playerInChair;
 
-
+import com.rostermaker.demo.legos.ShowPiece;
+import com.rostermaker.demo.legos.emptyChair.Chair;
 import com.rostermaker.demo.models.part.Part;
 import com.rostermaker.demo.models.player.Player;
 import com.rostermaker.demo.models.show.Show;
-import com.rostermaker.demo.legos.ShowPiece;
-import com.rostermaker.demo.legos.ShowPiece;
-import com.rostermaker.demo.legos.emptyChair.Chair;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Entity
-public class PlayerInChair implements Comparable<PlayerInChair> {
+public class PIC implements Comparable<PIC> {
 
     @Id
     @GeneratedValue
@@ -28,33 +27,21 @@ public class PlayerInChair implements Comparable<PlayerInChair> {
     @ManyToOne
     private Show show;
 
-    @ManyToOne
-    private Chair chair;
-
-
     @ElementCollection
     private List<Part> parts = new ArrayList<>();
 
+    @Embedded
+    private Part primaryPart;
 
-    public PlayerInChair() {
+    public PIC() {
     }
 
-    public PlayerInChair(ShowPiece showPiece, Chair chair) {
-        this.showPiece = showPiece;
-        this.chair = chair;
-    }
-
-
-    public PlayerInChair(Show showForChair, Chair chair) {
-        this.show = showForChair;
-        this.chair = chair;
-    }
-
-    public PlayerInChair(PICBuilder picBuilder) {
+    public PIC(PICBuilder picBuilder) {
         this.showPiece = picBuilder.showPiece;
         this.show = picBuilder.show;
         this.parts = picBuilder.parts;
         this.player = picBuilder.player;
+        this.primaryPart = picBuilder.primaryPart;
     }
 
     public void setPlayer(Player player) {
@@ -69,8 +56,16 @@ public class PlayerInChair implements Comparable<PlayerInChair> {
         this.show = show;
     }
 
-    public void setChair(Chair chair) {
-        this.chair = chair;
+    public void setParts(List<Part> parts) {
+        this.parts = parts;
+    }
+
+    public void setPrimaryPart(Part primaryPart) {
+        this.primaryPart = primaryPart;
+    }
+
+    public void addPart(Part part) {
+        parts.add(part);
     }
 
     public Long getId() {
@@ -89,19 +84,23 @@ public class PlayerInChair implements Comparable<PlayerInChair> {
         return show;
     }
 
-    public Chair getChair() {
-        return chair;
+    public List<Part> getParts() {
+        return parts;
+    }
+
+    public Part getPrimaryPart() {
+        return primaryPart;
     }
 
     public boolean hasThisPlayer(Player incomingPlayer) {
         return player != null && player.equals(incomingPlayer);
     }
 
-
     @Override
-    public int compareTo(PlayerInChair next) {
-        return chair.compareTo(next.getChair());
+    public int compareTo(PIC next) {
+        return parts.get(0).compareTo(next.getParts().get(0));
     }
 }
+
 
 

@@ -65,7 +65,6 @@ public class ChairsRest {
                 int instRank = part.getRank();
                 String assist = part.getSpecialDesignate();
             }
-
             return sorter.sort();
         }
         return null;
@@ -492,6 +491,4 @@ public class ChairsRest {
         return null;
 
     }
-
-
 }
