@@ -334,22 +334,22 @@ public class ChairsRest {
 //    }
 
 
-    @PostMapping("/remove-player-from-pic")
-    public Optional<PlayerInChair> removePlayerFromAChair(@RequestBody PlayerInChair incomingPIC) throws
-            IOException {
-        Optional<PlayerInChair> picToFind = picRepo.findById(incomingPIC.getId());
-
-        try {
-            picToFind.ifPresent(playerInChair -> {
-                playerInChair.setPlayer(null);
-                picRepo.save(playerInChair);
-            });
-        } catch (
-                Exception error) {
-            error.printStackTrace();
-        }
-        return picToFind;
-    }
+//    @PostMapping("/remove-player-from-pic")
+//    public Optional<PlayerInChair> removePlayerFromAChair(@RequestBody PlayerInChair incomingPIC) throws
+//            IOException {
+//        Optional<PlayerInChair> picToFind = picRepo.findById(incomingPIC.getId());
+//
+//        try {
+//            picToFind.ifPresent(playerInChair -> {
+//                playerInChair.setPlayer(null);
+//                picRepo.save(playerInChair);
+//            });
+//        } catch (
+//                Exception error) {
+//            error.printStackTrace();
+//        }
+//        return picToFind;
+//    }
 
 //    @PostMapping("/put-player-in-pic/{picId}")
 //    public Optional<PlayerInChair> putAPlayerInAChair(@RequestBody Player incomingPlayer, @PathVariable Long
@@ -464,31 +464,30 @@ public class ChairsRest {
     }
 
 
-    @PostMapping("/change-seating")
-    public Collection<PlayerInChair> changeSeatingOrder(@RequestBody Collection<PlayerInChair> pics) {
-
-        try {
-            for (PlayerInChair pic : pics) {
-                Optional<PlayerInChair> picToFind = picRepo.findById(pic.getId());
-                if (picToFind.isPresent()) {
-                    PlayerInChair foundPic = picToFind.get();
-
-                    if (!(foundPic.getPlayer() == null && pic.getPlayer() == null)) {
-                        if ((foundPic.getPlayer() == null && pic.getPlayer() != null) || (foundPic.getPlayer() != null && pic.getPlayer() == null)) {
-                            foundPic.setPlayer(pic.getPlayer());
-                            picRepo.save(foundPic);
-                        } else if (!foundPic.getPlayer().equals(pic.getPlayer())) {
-                            foundPic.setPlayer(pic.getPlayer());
-                            picRepo.save(foundPic);
-                        }
-                    }
-                }
-            }
-            return pics;
-        } catch (Exception error) {
-            error.printStackTrace();
-        }
-        return null;
-
-    }
+//    @PostMapping("/change-seating")
+//    public Collection<PlayerInChair> changeSeatingOrder(@RequestBody Collection<PlayerInChair> pics) {
+//
+//        try {
+//            for (PlayerInChair pic : pics) {
+//                Optional<PlayerInChair> picToFind = picRepo.findById(pic.getId());
+//                if (picToFind.isPresent()) {
+//                    PlayerInChair foundPic = picToFind.get();
+//
+//                    if (!(foundPic.getPlayer() == null && pic.getPlayer() == null)) {
+//                        if ((foundPic.getPlayer() == null && pic.getPlayer() != null) || (foundPic.getPlayer() != null && pic.getPlayer() == null)) {
+//                            foundPic.setPlayer(pic.getPlayer());
+//                            picRepo.save(foundPic);
+//                        } else if (!foundPic.getPlayer().equals(pic.getPlayer())) {
+//                            foundPic.setPlayer(pic.getPlayer());
+//                            picRepo.save(foundPic);
+//                        }
+//                    }
+//                }
+//            }
+//            return pics;
+//        } catch (Exception error) {
+//            error.printStackTrace();
+//        }
+//        return null;
+//    }
 }

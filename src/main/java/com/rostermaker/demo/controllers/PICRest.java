@@ -16,6 +16,7 @@ import com.rostermaker.demo.repos.ShowPieceRepo;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.*;
 
 @RestController
@@ -122,6 +123,50 @@ public class PICRest {
             }
         } catch (Exception error) {
             error.printStackTrace();
-        } return null;
+        }
+        return null;
+    }
+
+    @PostMapping("/remove-player-from-pic")
+    public Optional<PIC> removePlayerFromAChair(@RequestBody PIC incomingPIC) throws IOException {
+        Optional<PIC> picToFind = picRepo.findById(incomingPIC.getId());
+
+        try {
+            picToFind.ifPresent(playerInChair -> {
+                playerInChair.setPlayer(null);
+                picRepo.save(playerInChair);
+            });
+        } catch (
+                Exception error) {
+            error.printStackTrace();
+        }
+        return picToFind;
+    }
+
+    @PostMapping("/change-seating")
+    public Collection<PIC> changeSeatingOrder(@RequestBody Collection<PIC> pics) {
+
+        try {
+            for (PIC pic : pics) {
+                Optional<PIC> picToFind = picRepo.findById(pic.getId());
+                if (picToFind.isPresent()) {
+                    PIC foundPic = picToFind.get();
+
+                    if (!(foundPic.getPlayer() == null && pic.getPlayer() == null)) {
+                        if ((foundPic.getPlayer() == null && pic.getPlayer() != null) || (foundPic.getPlayer() != null && pic.getPlayer() == null)) {
+                            foundPic.setPlayer(pic.getPlayer());
+                            picRepo.save(foundPic);
+                        } else if (!foundPic.getPlayer().equals(pic.getPlayer())) {
+                            foundPic.setPlayer(pic.getPlayer());
+                            picRepo.save(foundPic);
+                        }
+                    }
+                }
+            }
+            return pics;
+        } catch (Exception error) {
+            error.printStackTrace();
+        }
+        return null;
     }
 }
