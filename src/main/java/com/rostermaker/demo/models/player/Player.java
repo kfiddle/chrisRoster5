@@ -3,6 +3,7 @@ package com.rostermaker.demo.models.player;
 
 import com.rostermaker.demo.enums.Type;
 import com.rostermaker.demo.legos.emptyChair.Chair;
+import com.rostermaker.demo.legos.playerInChair.PIC;
 import com.rostermaker.demo.legos.playerInChair.PlayerInChair;
 import com.rostermaker.demo.models.instrument.Instrument;
 import com.rostermaker.demo.models.part.Part;
@@ -215,6 +216,25 @@ public class Player implements Comparable<Player> {
         return role;
     }
 
+    public boolean couldSitHere(PlayerInChair foundPIC) {
+        Chair chair = foundPIC.getChair();
+        for (Part part : chair.getParts()) {
+            if (!instruments.contains(part.getInstrument())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean couldSitHere(PIC pic) {
+        for (Part part : pic.getParts()) {
+            if (!instruments.contains(part.getInstrument())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     @Override
     public int compareTo(Player otherPlayer) {
@@ -225,13 +245,5 @@ public class Player implements Comparable<Player> {
         } else return type.compare(otherPlayer.getType());
     }
 
-    public boolean couldSitHere(PlayerInChair foundPIC) {
-        Chair chair = foundPIC.getChair();
-        for (Part part : chair.getParts()) {
-            if (!instruments.contains(part.getInstrument())) {
-                return false;
-            }
-        }
-        return true;
-    }
+
 }

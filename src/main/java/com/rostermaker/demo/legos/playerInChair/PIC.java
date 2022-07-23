@@ -96,6 +96,15 @@ public class PIC implements Comparable<PIC> {
         return player != null && player.equals(incomingPlayer);
     }
 
+    public boolean couldSitHere(Player player) {
+        for (Part part : parts) {
+            if (!player.getInstruments().contains(part.getInstrument())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     @Override
     public int compareTo(PIC next) {
         return parts.get(0).compareTo(next.getParts().get(0));

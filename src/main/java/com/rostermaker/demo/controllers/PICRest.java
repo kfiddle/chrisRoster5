@@ -1,6 +1,7 @@
 package com.rostermaker.demo.controllers;
 
 
+import com.rostermaker.demo.enums.Type;
 import com.rostermaker.demo.legos.ShowPiece;
 import com.rostermaker.demo.legos.playerInChair.HornChairSorter;
 import com.rostermaker.demo.legos.playerInChair.HornPICSorter;
@@ -15,10 +16,7 @@ import com.rostermaker.demo.repos.ShowPieceRepo;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @CrossOrigin
@@ -106,4 +104,24 @@ public class PICRest {
         return Optional.empty();
     }
 
+    @PostMapping("/get-possible-players")
+    public List<Player> getPossiblePlayersForAChair(@RequestBody PIC incomingPIC) {
+        try {
+            Optional<PIC> picToFind = picRepo.findById(incomingPIC.getId());
+            if (picToFind.isPresent()) {
+                PIC foundPIC = picToFind.get();
+
+                List<Player> eligiblePlayers = new ArrayList<>(playerRepo.findAllByType(Type.CONTRACTED));
+
+                eligiblePlayers.removeIf(player -> !player.couldSitHere(foundPIC));
+
+                for (PIC pic : picRepo.findAllByShowPiece(foundPIC.getShowPiece())) {
+                    eligiblePlayers.remove(pic.getPlayer());
+                }
+                return eligiblePlayers;
+            }
+        } catch (Exception error) {
+            error.printStackTrace();
+        } return null;
+    }
 }

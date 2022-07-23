@@ -290,48 +290,48 @@ public class ChairsRest {
         return null;
     }
 
-    @PostMapping("/get-possible-players")
-    public List<Player> getPossiblePlayersForAChair(@RequestBody PlayerInChair incomingPIC) {
-
-        try {
-            List<Player> playersToSend = new ArrayList<>();
-            Optional<PlayerInChair> picToFind = picRepo.findById(incomingPIC.getId());
-            if (picToFind.isPresent()) {
-                PlayerInChair foundPIC = picToFind.get();
-
-                HashMap<Player, Boolean> eligiblePlayers = new HashMap<>();
-                for (Player player : playerRepo.findAllByType(Type.CONTRACTED)) {
-                    eligiblePlayers.put(player, true);
-                }
-
-                for (PlayerInChair picToCheck : picRepo.findAllByShowPiece(foundPIC.getShowPiece())) {
-                    if (eligiblePlayers.containsKey(picToCheck.getPlayer())) {
-                        eligiblePlayers.put(picToCheck.getPlayer(), false);
-                    }
-                }
-
-                for (Player player : playerRepo.findAllByType(Type.CONTRACTED)) {
-                    if (!player.couldSitHere(foundPIC)) {
-                        eligiblePlayers.put(player, false);
-                    }
-                }
-
-                for (Map.Entry<Player, Boolean> entry : eligiblePlayers.entrySet()) {
-                    if (entry.getValue().equals(true)) {
-                        playersToSend.add(entry.getKey());
-                    }
-                }
-
-            }
-            Collections.sort(playersToSend);
-            return playersToSend;
-
-
-        } catch (Exception error) {
-            error.printStackTrace();
-        }
-        return null;
-    }
+//    @PostMapping("/get-possible-players")
+//    public List<Player> getPossiblePlayersForAChair(@RequestBody PlayerInChair incomingPIC) {
+//
+//        try {
+//            List<Player> playersToSend = new ArrayList<>();
+//            Optional<PlayerInChair> picToFind = picRepo.findById(incomingPIC.getId());
+//            if (picToFind.isPresent()) {
+//                PlayerInChair foundPIC = picToFind.get();
+//
+//                HashMap<Player, Boolean> eligiblePlayers = new HashMap<>();
+//                for (Player player : playerRepo.findAllByType(Type.CONTRACTED)) {
+//                    eligiblePlayers.put(player, true);
+//                }
+//
+//                for (PlayerInChair picToCheck : picRepo.findAllByShowPiece(foundPIC.getShowPiece())) {
+//                    if (eligiblePlayers.containsKey(picToCheck.getPlayer())) {
+//                        eligiblePlayers.put(picToCheck.getPlayer(), false);
+//                    }
+//                }
+//
+//                for (Player player : playerRepo.findAllByType(Type.CONTRACTED)) {
+//                    if (!player.couldSitHere(foundPIC)) {
+//                        eligiblePlayers.put(player, false);
+//                    }
+//                }
+//
+//                for (Map.Entry<Player, Boolean> entry : eligiblePlayers.entrySet()) {
+//                    if (entry.getValue().equals(true)) {
+//                        playersToSend.add(entry.getKey());
+//                    }
+//                }
+//
+//            }
+//            Collections.sort(playersToSend);
+//            return playersToSend;
+//
+//
+//        } catch (Exception error) {
+//            error.printStackTrace();
+//        }
+//        return null;
+//    }
 
 
     @PostMapping("/remove-player-from-pic")
