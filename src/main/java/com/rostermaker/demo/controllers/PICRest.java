@@ -64,15 +64,6 @@ public class PICRest {
             List<PIC> picsToReturn = (List<PIC>) picRepo.findAllByShowPiece(showPieceToFind.get());
             Collections.sort(picsToReturn);
             HornPICSorter sorter = new HornPICSorter(picsToReturn);
-            List<PIC> sortedPics = sorter.sort();
-
-            for (PIC pic : sortedPics) {
-                Part part = pic.getPrimaryPart();
-                String instName = part.getInstrument().getName();
-                int instRank = part.getRank();
-                String assist = part.getSpecialDesignate();
-            }
-
             return sorter.sort();
         }
         return null;
@@ -194,15 +185,19 @@ public class PICRest {
         Optional<PIC> picToFind = picRepo.findById(incomingPIC.getId());
 
         try {
-            picToFind.ifPresent(foundPic -> {
-                foundPic.setParts(incomingPIC.getParts());
-                picRepo.save(foundPic);
-            });
-
+            if (picToFind.isPresent()) {
+                PIC foundPIC = picToFind.get();
+                foundPIC.setParts(incomingPIC.getParts());
+                for (Part part : foundPIC.getParts()) {
+                    System.out.println(part.getInstrument().getName() + "     " + part.getRank());
+                }
+                picRepo.save(foundPIC);
+                return foundPIC;
+            }
         } catch (Exception error) {
             error.printStackTrace();
         }
-        return incomingPIC;
+        return null;
     }
 
 //    @PostMapping("/edit-pic-parts/{picId}")
