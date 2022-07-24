@@ -397,18 +397,18 @@ public class ChairsRest {
 //        return Optional.empty();
 //    }
 
-    @PostMapping("/delete-pic")
-    public PlayerInChair deleteEntireChair(@RequestBody PlayerInChair picToRemove) throws IOException {
-
-        try {
-            Optional<PlayerInChair> pic = picRepo.findById(picToRemove.getId());
-            pic.ifPresent(foundPic -> picRepo.deleteById(foundPic.getId()));
-            return picToRemove;
-        } catch (Exception error) {
-            error.printStackTrace();
-        }
-        return null;
-    }
+//    @PostMapping("/delete-pic")
+//    public PlayerInChair deleteEntireChair(@RequestBody PlayerInChair picToRemove) throws IOException {
+//
+//        try {
+//            Optional<PlayerInChair> pic = picRepo.findById(picToRemove.getId());
+//            pic.ifPresent(foundPic -> picRepo.deleteById(foundPic.getId()));
+//            return picToRemove;
+//        } catch (Exception error) {
+//            error.printStackTrace();
+//        }
+//        return null;
+//    }
 
 
     @PostMapping("/make-single-string-section-in-piece/{showPieceId}")

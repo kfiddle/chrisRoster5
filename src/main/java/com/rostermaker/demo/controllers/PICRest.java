@@ -7,9 +7,12 @@ import com.rostermaker.demo.legos.playerInChair.HornChairSorter;
 import com.rostermaker.demo.legos.playerInChair.HornPICSorter;
 import com.rostermaker.demo.legos.playerInChair.PIC;
 import com.rostermaker.demo.legos.playerInChair.PlayerInChair;
+import com.rostermaker.demo.legos.scoreline.ScoreLine;
+import com.rostermaker.demo.models.instrument.Instrument;
 import com.rostermaker.demo.models.part.Part;
 import com.rostermaker.demo.models.player.Player;
 import com.rostermaker.demo.models.show.Show;
+import com.rostermaker.demo.repos.InstrumentRepo;
 import com.rostermaker.demo.repos.PICRepo;
 import com.rostermaker.demo.repos.PlayerRepo;
 import com.rostermaker.demo.repos.ShowPieceRepo;
@@ -32,10 +35,26 @@ public class PICRest {
     @Resource
     PlayerRepo playerRepo;
 
+    @Resource
+    InstrumentRepo instrumentRepo;
+
 
     @RequestMapping("/get-all-new-pics")
     public Collection<PIC> getAllPics() {
         return (Collection<PIC>) picRepo.findAll();
+    }
+
+    @PostMapping("/delete-pic")
+    public PIC deleteEntireChair(@RequestBody PIC picToRemove) throws IOException {
+
+        try {
+            Optional<PIC> pic = picRepo.findById(picToRemove.getId());
+            pic.ifPresent(foundPic -> picRepo.deleteById(foundPic.getId()));
+            return picToRemove;
+        } catch (Exception error) {
+            error.printStackTrace();
+        }
+        return null;
     }
 
     @RequestMapping("/get-better-pics-in-show-piece")
@@ -169,4 +188,52 @@ public class PICRest {
         }
         return null;
     }
+
+    @PostMapping("/edit-pic-parts")
+    public PIC editPartsInPic(@RequestBody PIC incomingPIC) throws IOException {
+        Optional<PIC> picToFind = picRepo.findById(incomingPIC.getId());
+
+        try {
+            picToFind.ifPresent(foundPic -> {
+                foundPic.setParts(incomingPIC.getParts());
+                picRepo.save(foundPic);
+            });
+
+        } catch (Exception error) {
+            error.printStackTrace();
+        }
+        return incomingPIC;
+    }
+
+//    @PostMapping("/edit-pic-parts/{picId}")
+//    public PIC editPartsInPIC(@PathVariable Long picId, @RequestBody ScoreLine incomingScoreLine) throws IOException {
+//
+//        Optional<PIC> picToFind = picRepo.findById(picId);
+//        List<Part> newParts = new ArrayList<>();
+//
+//        try {
+//            for (Part part : incomingScoreLine.getParts()) {
+//                Optional<Instrument> instOpt = instrumentRepo.findById(part.getInstrument().getId());
+//                if (instOpt.isPresent()) {
+//                    Instrument inst = instOpt.get();
+//                    Part partToAdd = new Part(inst);
+//                    if (part.getRank() > 0) {
+//                        partToAdd.setRank(part.getRank());
+//                    } else if (part.getSpecialDesignate() != null) {
+//                        partToAdd.setSpecialDesignate(part.getSpecialDesignate());
+//                    }
+//                    newParts.add(partToAdd);
+//                    picToFind.ifPresent(foundPic -> {
+//                        foundPic.setParts(newParts);
+//                        picRepo.save(foundPic);
+//                    });
+//                }
+//            }
+//
+//        } catch (
+//                Exception error) {
+//            error.printStackTrace();
+//        }
+//        return null;
+//    }
 }
