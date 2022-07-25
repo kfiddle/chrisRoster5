@@ -50,7 +50,7 @@ public class ScoreLineRest {
     public ScoreLine addScoreLine(ScoreLine incomingScoreLine) {
         Piece piece = null;
         Show show = null;
-        ScoreLine scoreLineToSave = null;
+        ScoreLine scoreLineToSave;
 
         if (incomingScoreLine.getPiece() != null) {
             Optional<Piece> pieceToFind = pieceRepo.findById(incomingScoreLine.getPiece().getId());

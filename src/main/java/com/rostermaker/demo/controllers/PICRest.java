@@ -12,10 +12,7 @@ import com.rostermaker.demo.models.instrument.Instrument;
 import com.rostermaker.demo.models.part.Part;
 import com.rostermaker.demo.models.player.Player;
 import com.rostermaker.demo.models.show.Show;
-import com.rostermaker.demo.repos.InstrumentRepo;
-import com.rostermaker.demo.repos.PICRepo;
-import com.rostermaker.demo.repos.PlayerRepo;
-import com.rostermaker.demo.repos.ShowPieceRepo;
+import com.rostermaker.demo.repos.*;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -31,6 +28,9 @@ public class PICRest {
 
     @Resource
     ShowPieceRepo showPieceRepo;
+
+    @Resource
+    ShowRepo showRepo;
 
     @Resource
     PlayerRepo playerRepo;
@@ -62,6 +62,18 @@ public class PICRest {
         Optional<ShowPiece> showPieceToFind = showPieceRepo.findById(incomingShowPiece.getId());
         if (showPieceToFind.isPresent()) {
             List<PIC> picsToReturn = (List<PIC>) picRepo.findAllByShowPiece(showPieceToFind.get());
+            Collections.sort(picsToReturn);
+            HornPICSorter sorter = new HornPICSorter(picsToReturn);
+            return sorter.sort();
+        }
+        return null;
+    }
+
+    @RequestMapping("/get-pics-in-show")
+    public Collection<PIC> getAllChairsInShow(@RequestBody Show incomingShow) {
+        Optional<Show> showToFind = showRepo.findById(incomingShow.getId());
+        if (showToFind.isPresent()) {
+            List<PIC> picsToReturn = (List<PIC>) picRepo.findAllByShow(showToFind.get());
             Collections.sort(picsToReturn);
             HornPICSorter sorter = new HornPICSorter(picsToReturn);
             return sorter.sort();
@@ -113,6 +125,26 @@ public class PICRest {
 
         }
         return Optional.empty();
+    }
+
+    @PostMapping("/get-all-available-players")
+    public List<Player> getAllAvailablePlayersForAChair(@RequestBody PIC incomingPIC) {
+        try {
+            Optional<PIC> picToFind = picRepo.findById(incomingPIC.getId());
+            if (picToFind.isPresent()) {
+                PIC foundPIC = picToFind.get();
+
+               List<Player> eligiblePlayers = (List<Player>) playerRepo.findAll();
+
+                for (PIC pic : picRepo.findAllByShowPiece(foundPIC.getShowPiece())) {
+                    eligiblePlayers.remove(pic.getPlayer());
+                }
+                return eligiblePlayers;
+            }
+        } catch (Exception error) {
+            error.printStackTrace();
+        }
+        return null;
     }
 
     @PostMapping("/get-possible-players")

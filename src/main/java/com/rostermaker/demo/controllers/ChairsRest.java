@@ -70,17 +70,17 @@ public class ChairsRest {
         return null;
     }
 
-    @RequestMapping("/get-pics-in-show")
-    public Collection<PlayerInChair> getAllChairsInShow(@RequestBody Show incomingShow) {
-        Optional<Show> showToFind = showRepo.findById(incomingShow.getId());
-        if (showToFind.isPresent()) {
-            List<PlayerInChair> picsToReturn = (List<PlayerInChair>) picRepo.findAllByShow(showToFind.get());
-            Collections.sort(picsToReturn);
-            HornChairSorter sorter = new HornChairSorter(picsToReturn);
-            return sorter.sort();
-        }
-        return null;
-    }
+//    @RequestMapping("/get-pics-in-show")
+//    public Collection<PlayerInChair> getAllChairsInShow(@RequestBody Show incomingShow) {
+//        Optional<Show> showToFind = showRepo.findById(incomingShow.getId());
+//        if (showToFind.isPresent()) {
+//            List<PlayerInChair> picsToReturn = (List<PlayerInChair>) picRepo.findAllByShow(showToFind.get());
+//            Collections.sort(picsToReturn);
+//            HornChairSorter sorter = new HornChairSorter(picsToReturn);
+//            return sorter.sort();
+//        }
+//        return null;
+//    }
 
     public Chair addChair(Chair incomingChair) {
         Piece piece = null;
