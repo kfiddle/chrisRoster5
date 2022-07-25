@@ -188,9 +188,6 @@ public class PICRest {
             if (picToFind.isPresent()) {
                 PIC foundPIC = picToFind.get();
                 foundPIC.setParts(incomingPIC.getParts());
-                for (Part part : foundPIC.getParts()) {
-                    System.out.println(part.getInstrument().getName() + "     " + part.getRank());
-                }
                 picRepo.save(foundPIC);
                 return foundPIC;
             }
@@ -200,35 +197,4 @@ public class PICRest {
         return null;
     }
 
-//    @PostMapping("/edit-pic-parts/{picId}")
-//    public PIC editPartsInPIC(@PathVariable Long picId, @RequestBody ScoreLine incomingScoreLine) throws IOException {
-//
-//        Optional<PIC> picToFind = picRepo.findById(picId);
-//        List<Part> newParts = new ArrayList<>();
-//
-//        try {
-//            for (Part part : incomingScoreLine.getParts()) {
-//                Optional<Instrument> instOpt = instrumentRepo.findById(part.getInstrument().getId());
-//                if (instOpt.isPresent()) {
-//                    Instrument inst = instOpt.get();
-//                    Part partToAdd = new Part(inst);
-//                    if (part.getRank() > 0) {
-//                        partToAdd.setRank(part.getRank());
-//                    } else if (part.getSpecialDesignate() != null) {
-//                        partToAdd.setSpecialDesignate(part.getSpecialDesignate());
-//                    }
-//                    newParts.add(partToAdd);
-//                    picToFind.ifPresent(foundPic -> {
-//                        foundPic.setParts(newParts);
-//                        picRepo.save(foundPic);
-//                    });
-//                }
-//            }
-//
-//        } catch (
-//                Exception error) {
-//            error.printStackTrace();
-//        }
-//        return null;
-//    }
 }
