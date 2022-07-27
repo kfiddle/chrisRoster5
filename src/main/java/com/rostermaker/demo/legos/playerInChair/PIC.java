@@ -58,6 +58,7 @@ public class PIC implements Comparable<PIC> {
 
     public void setParts(List<Part> parts) {
         this.parts = parts;
+        this.primaryPart = parts.get(0);
     }
 
     public void setPrimaryPart(Part primaryPart) {
