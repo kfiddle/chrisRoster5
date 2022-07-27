@@ -45,30 +45,30 @@ public class ChairsRest {
     PlayerRepo playerRepo;
 
 
-    @RequestMapping("/get-all-pics")
-    public Collection<PlayerInChair> getAllPics() {
-        return (Collection<PlayerInChair>) picRepo.findAll();
-    }
+//    @RequestMapping("/get-all-pics")
+//    public Collection<PlayerInChair> getAllPics() {
+//        return (Collection<PlayerInChair>) picRepo.findAll();
+//    }
 
-    @RequestMapping("/get-pics-in-show-piece")
-    public Collection<PlayerInChair> getAllChairsInAPieceOnShow(@RequestBody ShowPiece incomingShowPiece) {
-        Optional<ShowPiece> showPieceToFind = showPieceRepo.findById(incomingShowPiece.getId());
-        if (showPieceToFind.isPresent()) {
-            List<PlayerInChair> picsToReturn = (List<PlayerInChair>) picRepo.findAllByShowPiece(showPieceToFind.get());
-            Collections.sort(picsToReturn);
-            HornChairSorter sorter = new HornChairSorter(picsToReturn);
-            List<PlayerInChair> sortedPics = sorter.sort();
-
-            for (PlayerInChair pic : sortedPics) {
-                Part part = pic.getChair().getPrimaryPart();
-                String instName = part.getInstrument().getName();
-                int instRank = part.getRank();
-                String assist = part.getSpecialDesignate();
-            }
-            return sorter.sort();
-        }
-        return null;
-    }
+//    @RequestMapping("/get-pics-in-show-piece")
+//    public Collection<PlayerInChair> getAllChairsInAPieceOnShow(@RequestBody ShowPiece incomingShowPiece) {
+//        Optional<ShowPiece> showPieceToFind = showPieceRepo.findById(incomingShowPiece.getId());
+//        if (showPieceToFind.isPresent()) {
+//            List<PlayerInChair> picsToReturn = (List<PlayerInChair>) picRepo.findAllByShowPiece(showPieceToFind.get());
+//            Collections.sort(picsToReturn);
+//            HornChairSorter sorter = new HornChairSorter(picsToReturn);
+//            List<PlayerInChair> sortedPics = sorter.sort();
+//
+//            for (PlayerInChair pic : sortedPics) {
+//                Part part = pic.getChair().getPrimaryPart();
+//                String instName = part.getInstrument().getName();
+//                int instRank = part.getRank();
+//                String assist = part.getSpecialDesignate();
+//            }
+//            return sorter.sort();
+//        }
+//        return null;
+//    }
 
 //    @RequestMapping("/get-pics-in-show")
 //    public Collection<PlayerInChair> getAllChairsInShow(@RequestBody Show incomingShow) {
@@ -274,21 +274,21 @@ public class ChairsRest {
 //        return showCheck;
 //    }
 
-    @PostMapping("/get-chairs-in-piece")
-    public Collection<Chair> getOrchestrationOfPiece(@RequestBody Piece incomingPiece) throws IOException {
-        Optional<Piece> pieceCheck = pieceRepo.findById(incomingPiece.getId());
-
-        try {
-            if (pieceCheck.isPresent()) {
-                List<Chair> chairsToReturn = (List<Chair>) chairRepo.findAllByPiece(pieceCheck.get());
-                Collections.sort(chairsToReturn);
-                return chairsToReturn;
-            }
-        } catch (Exception error) {
-            error.printStackTrace();
-        }
-        return null;
-    }
+//    @PostMapping("/get-chairs-in-piece")
+//    public Collection<Chair> getOrchestrationOfPiece(@RequestBody Piece incomingPiece) throws IOException {
+//        Optional<Piece> pieceCheck = pieceRepo.findById(incomingPiece.getId());
+//
+//        try {
+//            if (pieceCheck.isPresent()) {
+//                List<Chair> chairsToReturn = (List<Chair>) chairRepo.findAllByPiece(pieceCheck.get());
+//                Collections.sort(chairsToReturn);
+//                return chairsToReturn;
+//            }
+//        } catch (Exception error) {
+//            error.printStackTrace();
+//        }
+//        return null;
+//    }
 
 //    @PostMapping("/get-possible-players")
 //    public List<Player> getPossiblePlayersForAChair(@RequestBody PlayerInChair incomingPIC) {
@@ -411,57 +411,57 @@ public class ChairsRest {
 //    }
 
 
-    @PostMapping("/make-single-string-section-in-piece/{showPieceId}")
-    public Part makeStringSection(@RequestBody Part sectionAndNumber, @PathVariable Long showPieceId) throws
-            IOException {
+//    @PostMapping("/make-single-string-section-in-piece/{showPieceId}")
+//    public Part makeStringSection(@RequestBody Part sectionAndNumber, @PathVariable Long showPieceId) throws
+//            IOException {
+//
+//        try {
+//            Optional<ShowPiece> showPieceToFind = showPieceRepo.findById(showPieceId);
+//            if (showPieceToFind.isPresent()) {
+//
+//                ShowPiece retrievedShowPiece = showPieceToFind.get();
+//                Part partToReference = new Part(sectionAndNumber.getInstrument(), 1);
+//                if (chairRepo.existsByPrimaryPartAndPiece(partToReference, retrievedShowPiece.getPiece())) {
+//                    for (int seat = 2; seat <= sectionAndNumber.getRank(); seat++) {
+//                        List<Part> parts = Collections.singletonList(new Part(sectionAndNumber.getInstrument(), seat));
+//                        Chair chair = new ChairBuilder().parts(parts).piece(retrievedShowPiece.getPiece()).build();
+//                        picRepo.save(new PlayerInChair(retrievedShowPiece, chair));
+//                    }
+//                }
+//            }
+//            return sectionAndNumber;
+//        } catch (Exception error) {
+//            error.printStackTrace();
+//        }
+//        return null;
+//    }
 
-        try {
-            Optional<ShowPiece> showPieceToFind = showPieceRepo.findById(showPieceId);
-            if (showPieceToFind.isPresent()) {
 
-                ShowPiece retrievedShowPiece = showPieceToFind.get();
-                Part partToReference = new Part(sectionAndNumber.getInstrument(), 1);
-                if (chairRepo.existsByPrimaryPartAndPiece(partToReference, retrievedShowPiece.getPiece())) {
-                    for (int seat = 2; seat <= sectionAndNumber.getRank(); seat++) {
-                        List<Part> parts = Collections.singletonList(new Part(sectionAndNumber.getInstrument(), seat));
-                        Chair chair = new ChairBuilder().parts(parts).piece(retrievedShowPiece.getPiece()).build();
-                        picRepo.save(new PlayerInChair(retrievedShowPiece, chair));
-                    }
-                }
-            }
-            return sectionAndNumber;
-        } catch (Exception error) {
-            error.printStackTrace();
-        }
-        return null;
-    }
-
-
-    @PostMapping("/make-single-string-section-in-show/{showId}")
-    public Part makeStringSectionForPops(@RequestBody Part sectionAndNumber, @PathVariable Long showId) throws
-            IOException {
-
-        try {
-            Optional<Show> showToFind = showRepo.findById(showId);
-            if (showToFind.isPresent()) {
-
-                Show retrievedShow = showToFind.get();
-                Part partToReference = new Part(sectionAndNumber.getInstrument(), 1);
-                if (chairRepo.existsByPrimaryPartAndShow(partToReference, retrievedShow)) {
-                    for (int seat = 1; seat < sectionAndNumber.getRank(); seat++) {
-                        List<Part> parts = Collections.singletonList(new Part(sectionAndNumber.getInstrument(), seat));
-
-                        Chair chair = new ChairBuilder().parts(parts).show(retrievedShow).build();
-                        picRepo.save(new PlayerInChair(retrievedShow, chair));
-                    }
-                    return sectionAndNumber;
-                }
-            }
-        } catch (Exception error) {
-            error.printStackTrace();
-        }
-        return null;
-    }
+//    @PostMapping("/make-single-string-section-in-show/{showId}")
+//    public Part makeStringSectionForPops(@RequestBody Part sectionAndNumber, @PathVariable Long showId) throws
+//            IOException {
+//
+//        try {
+//            Optional<Show> showToFind = showRepo.findById(showId);
+//            if (showToFind.isPresent()) {
+//
+//                Show retrievedShow = showToFind.get();
+//                Part partToReference = new Part(sectionAndNumber.getInstrument(), 1);
+//                if (chairRepo.existsByPrimaryPartAndShow(partToReference, retrievedShow)) {
+//                    for (int seat = 1; seat < sectionAndNumber.getRank(); seat++) {
+//                        List<Part> parts = Collections.singletonList(new Part(sectionAndNumber.getInstrument(), seat));
+//
+//                        Chair chair = new ChairBuilder().parts(parts).show(retrievedShow).build();
+//                        picRepo.save(new PlayerInChair(retrievedShow, chair));
+//                    }
+//                    return sectionAndNumber;
+//                }
+//            }
+//        } catch (Exception error) {
+//            error.printStackTrace();
+//        }
+//        return null;
+//    }
 
 
 //    @PostMapping("/change-seating")

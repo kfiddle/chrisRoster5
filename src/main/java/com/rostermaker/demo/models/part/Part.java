@@ -27,6 +27,12 @@ public class Part implements Comparable<Part> {
         this.rank = rank;
     }
 
+    public Part(Instrument instrument, int rank, String specialDesignate) {
+        this.instrument = instrument;
+        this.rank = rank;
+        this.specialDesignate = specialDesignate;
+    }
+
     public void setInstrument(Instrument instrument) {
         this.instrument = instrument;
     }
@@ -69,14 +75,3 @@ public class Part implements Comparable<Part> {
 
 }
 
-//    public int compareTo(Chair next) {
-//        if (primaryPart.compare(next.getPrimaryPart()) != 0) {
-//            return primaryPart.compare(next.getPrimaryPart());
-//        } else if (rank > next.getRank()) {
-//            return 1;
-//        } else if (rank < next.getRank()) {
-//            return -1;
-//        } else {
-//            return 0;
-//        }
-//    }

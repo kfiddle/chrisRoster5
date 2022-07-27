@@ -1,6 +1,7 @@
 package com.rostermaker.demo.controllers;
 
 
+import com.rostermaker.demo.PartsListMaker;
 import com.rostermaker.demo.enums.Type;
 import com.rostermaker.demo.legos.ShowPiece;
 import com.rostermaker.demo.legos.playerInChair.HornChairSorter;
@@ -13,6 +14,7 @@ import com.rostermaker.demo.models.part.Part;
 import com.rostermaker.demo.models.player.Player;
 import com.rostermaker.demo.models.show.Show;
 import com.rostermaker.demo.repos.*;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -39,7 +41,7 @@ public class PICRest {
     InstrumentRepo instrumentRepo;
 
 
-    @RequestMapping("/get-all-new-pics")
+    @RequestMapping("/get-all-pics")
     public Collection<PIC> getAllPics() {
         return (Collection<PIC>) picRepo.findAll();
     }
@@ -57,13 +59,21 @@ public class PICRest {
         return null;
     }
 
-    @RequestMapping("/get-better-pics-in-show-piece")
+    @RequestMapping("/get-pics-in-show-piece")
     public Collection<PIC> getAllPICSInAPieceOnShow(@RequestBody ShowPiece incomingShowPiece) {
         Optional<ShowPiece> showPieceToFind = showPieceRepo.findById(incomingShowPiece.getId());
         if (showPieceToFind.isPresent()) {
             List<PIC> picsToReturn = (List<PIC>) picRepo.findAllByShowPiece(showPieceToFind.get());
             Collections.sort(picsToReturn);
             HornPICSorter sorter = new HornPICSorter(picsToReturn);
+            List<PIC> sorted = sorter.sort();
+
+            for (PIC pic : sorted) {
+                System.out.println(pic.getPrimaryPart().getInstrument().getName() + "     "
+                        + pic.getPrimaryPart().getRank() + "    "
+                        + pic.getPrimaryPart().getSpecialDesignate());
+            }
+
             return sorter.sort();
         }
         return null;
@@ -134,7 +144,7 @@ public class PICRest {
             if (picToFind.isPresent()) {
                 PIC foundPIC = picToFind.get();
 
-               List<Player> eligiblePlayers = (List<Player>) playerRepo.findAll();
+                List<Player> eligiblePlayers = (List<Player>) playerRepo.findAll();
 
                 for (PIC pic : picRepo.findAllByShowPiece(foundPIC.getShowPiece())) {
                     eligiblePlayers.remove(pic.getPlayer());
@@ -219,8 +229,16 @@ public class PICRest {
         try {
             if (picToFind.isPresent()) {
                 PIC foundPIC = picToFind.get();
-                foundPIC.setParts(incomingPIC.getParts());
+
+                PartsListMaker maker = new PartsListMaker(instrumentRepo);
+                foundPIC.setParts(maker.makeList(incomingPIC.getParts()));
+
                 picRepo.save(foundPIC);
+                System.out.println("------- edited new parts---------");
+
+                for (Part part : foundPIC.getParts()) {
+                    System.out.println(part.getInstrument().getName() + "   " + part.getRank() + "    " + part.getSpecialDesignate());
+                }
                 return foundPIC;
             }
         } catch (Exception error) {

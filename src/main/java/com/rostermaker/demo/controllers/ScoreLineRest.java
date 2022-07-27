@@ -1,6 +1,7 @@
 package com.rostermaker.demo.controllers;
 
 
+import com.rostermaker.demo.PartsListMaker;
 import com.rostermaker.demo.legos.ShowPiece;
 import com.rostermaker.demo.legos.emptyChair.Chair;
 import com.rostermaker.demo.legos.emptyChair.ChairBuilder;
@@ -64,28 +65,9 @@ public class ScoreLineRest {
             }
         }
 
-        List<Part> partsInNewScoreLine = new ArrayList<>();
-
-        for (Part part : incomingScoreLine.getParts()) {
-            Instrument inst;
-            if (part.getInstrument().getName() != null) {
-                inst = instrumentRepo.findByName(part.getInstrument().getName());
-            } else {
-                inst = instrumentRepo.findByAbbreviation(part.getInstrument().getAbbreviation());
-            }
-
-            Part partToAdd = new Part(inst);
-            if (part.getRank() > 0) {
-                partToAdd.setRank(part.getRank());
-            } else if (part.getSpecialDesignate() != null) {
-                partToAdd.setSpecialDesignate(part.getSpecialDesignate());
-            }
-
-            partsInNewScoreLine.add(partToAdd);
-        }
-
+        PartsListMaker maker = new PartsListMaker(instrumentRepo);
         scoreLineToSave = new ScoreLineBuilder()
-                .parts(partsInNewScoreLine)
+                .parts(maker.makeList(incomingScoreLine.getParts()))
                 .piece(piece)
                 .show(show)
                 .build();
