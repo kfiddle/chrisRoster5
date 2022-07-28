@@ -249,12 +249,6 @@ public class Populator implements CommandLineRunner {
 
         showPieceRepo.saveAll(Arrays.asList(diamondOnFirst, poulencOnFirst, laMerOnFirst));
 
-//        Chair firstChair = new ChairBuilder().part(new Part(flute, 1)).piece(diamond).build();
-//        chairRepo.save(firstChair);
-//
-//        for (Part part : firstChair.getParts()) {
-//            System.out.println(part.getInstrument().getName() + "     " + 1);
-//        }
 
 
     }

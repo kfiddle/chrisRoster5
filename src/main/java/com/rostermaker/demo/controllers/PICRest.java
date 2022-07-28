@@ -66,14 +66,6 @@ public class PICRest {
             List<PIC> picsToReturn = (List<PIC>) picRepo.findAllByShowPiece(showPieceToFind.get());
             Collections.sort(picsToReturn);
             HornPICSorter sorter = new HornPICSorter(picsToReturn);
-            List<PIC> sorted = sorter.sort();
-
-            for (PIC pic : sorted) {
-                System.out.println(pic.getPrimaryPart().getInstrument().getName() + "     "
-                        + pic.getPrimaryPart().getRank() + "    "
-                        + pic.getPrimaryPart().getSpecialDesignate());
-            }
-
             return sorter.sort();
         }
         return null;
@@ -232,13 +224,7 @@ public class PICRest {
 
                 PartsListMaker maker = new PartsListMaker(instrumentRepo);
                 foundPIC.setParts(maker.makeList(incomingPIC.getParts()));
-
                 picRepo.save(foundPIC);
-                System.out.println("------- edited new parts---------");
-
-                for (Part part : foundPIC.getParts()) {
-                    System.out.println(part.getInstrument().getName() + "   " + part.getRank() + "    " + part.getSpecialDesignate());
-                }
                 return foundPIC;
             }
         } catch (Exception error) {

@@ -163,53 +163,53 @@ public class ChairsRest {
 //    }
 
 
-    @PostMapping("/add-empty-chairs/{pieceId}")
-    public Optional<Piece> addFullOrchestration(@PathVariable Long pieceId, @RequestBody Collection<Chair> incomingChairs) throws IOException {
-        Optional<Piece> pieceCheck = pieceRepo.findById(pieceId);
-
-        try {
-            if (pieceCheck.isPresent()) {
-                Piece pieceForChairs = pieceCheck.get();
-
-                for (Chair chair : incomingChairs) {
-                    List<Part> partsInNewChair = new ArrayList<>();
-
-                    for (Part part : chair.getParts()) {
-                        String abbreviation = part.getInstrument().getAbbreviation();
-
-                        if (instrumentRepo.existsByAbbreviation(abbreviation)) {
-                            Instrument inst = instrumentRepo.findByAbbreviation(abbreviation);
-
-                            Part partToAdd = new Part(inst);
-                            if (part.getRank() > 0) {
-                                partToAdd.setRank(part.getRank());
-                            } else if (part.getSpecialDesignate() != null) {
-                                partToAdd.setSpecialDesignate(part.getSpecialDesignate());
-                            }
-
-                            partsInNewChair.add(partToAdd);
-                        }
-                    }
-
-                    Chair chairToSave = new ChairBuilder()
-                            .parts(partsInNewChair)
-                            .piece(pieceForChairs)
-                            .build();
-                    chairRepo.save(chairToSave);
-
-                    if (showPieceRepo.existsByPiece(pieceForChairs)) {
-                        for (ShowPiece showPiece : showPieceRepo.findAllByPiece(pieceForChairs)) {
-                            picRepo.save(new PlayerInChair(showPiece, chairToSave));
-                        }
-                    }
-                }
-            }
-        } catch (
-                Exception error) {
-            error.printStackTrace();
-        }
-        return pieceCheck;
-    }
+//    @PostMapping("/add-empty-chairs/{pieceId}")
+//    public Optional<Piece> addFullOrchestration(@PathVariable Long pieceId, @RequestBody Collection<Chair> incomingChairs) throws IOException {
+//        Optional<Piece> pieceCheck = pieceRepo.findById(pieceId);
+//
+//        try {
+//            if (pieceCheck.isPresent()) {
+//                Piece pieceForChairs = pieceCheck.get();
+//
+//                for (Chair chair : incomingChairs) {
+//                    List<Part> partsInNewChair = new ArrayList<>();
+//
+//                    for (Part part : chair.getParts()) {
+//                        String abbreviation = part.getInstrument().getAbbreviation();
+//
+//                        if (instrumentRepo.existsByAbbreviation(abbreviation)) {
+//                            Instrument inst = instrumentRepo.findByAbbreviation(abbreviation);
+//
+//                            Part partToAdd = new Part(inst);
+//                            if (part.getRank() > 0) {
+//                                partToAdd.setRank(part.getRank());
+//                            } else if (part.getSpecialDesignate() != null) {
+//                                partToAdd.setSpecialDesignate(part.getSpecialDesignate());
+//                            }
+//
+//                            partsInNewChair.add(partToAdd);
+//                        }
+//                    }
+//
+//                    Chair chairToSave = new ChairBuilder()
+//                            .parts(partsInNewChair)
+//                            .piece(pieceForChairs)
+//                            .build();
+//                    chairRepo.save(chairToSave);
+//
+//                    if (showPieceRepo.existsByPiece(pieceForChairs)) {
+//                        for (ShowPiece showPiece : showPieceRepo.findAllByPiece(pieceForChairs)) {
+//                            picRepo.save(new PlayerInChair(showPiece, chairToSave));
+//                        }
+//                    }
+//                }
+//            }
+//        } catch (
+//                Exception error) {
+//            error.printStackTrace();
+//        }
+//        return pieceCheck;
+//    }
 
 
 //    @PostMapping("/add-chairs-to-piece/{pieceId}")
