@@ -4,8 +4,6 @@ package com.rostermaker.demo;
 import com.rostermaker.demo.enums.Event;
 import com.rostermaker.demo.enums.Type;
 import com.rostermaker.demo.legos.ShowPiece;
-import com.rostermaker.demo.legos.emptyChair.Chair;
-import com.rostermaker.demo.legos.emptyChair.ChairBuilder;
 import com.rostermaker.demo.models.instrument.Instrument;
 import com.rostermaker.demo.models.part.Part;
 import com.rostermaker.demo.models.piece.Piece;
@@ -46,11 +44,6 @@ public class Populator implements CommandLineRunner {
 
     @Resource
     HorlogeRepo horlogeRepo;
-
-    @Resource
-    ChairRepo chairRepo;
-
-
 
     @Override
     public void run(String... args) throws Exception {

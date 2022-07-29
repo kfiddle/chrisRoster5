@@ -3,10 +3,7 @@ package com.rostermaker.demo.controllers;
 
 import com.rostermaker.demo.PartsListMaker;
 import com.rostermaker.demo.legos.ShowPiece;
-import com.rostermaker.demo.legos.emptyChair.Chair;
-import com.rostermaker.demo.legos.emptyChair.ChairBuilder;
 import com.rostermaker.demo.legos.playerInChair.PICBuilder;
-import com.rostermaker.demo.legos.playerInChair.PlayerInChair;
 import com.rostermaker.demo.legos.scoreline.ScoreLine;
 import com.rostermaker.demo.legos.scoreline.ScoreLineBuilder;
 import com.rostermaker.demo.models.instrument.Instrument;

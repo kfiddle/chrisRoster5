@@ -1,6 +1,5 @@
 package com.rostermaker.demo.repos;
 
-import com.rostermaker.demo.legos.emptyChair.Chair;
 import com.rostermaker.demo.legos.scoreline.ScoreLine;
 import com.rostermaker.demo.models.part.Part;
 import com.rostermaker.demo.models.piece.Piece;
@@ -22,6 +21,5 @@ public interface ScoreLineRepo extends CrudRepository<ScoreLine, Long> {
 
     boolean existsByPrimaryPartAndShow(Part stringPart, Show retrievedShow);
 
-    Chair findByPrimaryPartAndShow(Part stringPart, Show retrievedShow);
 
 }

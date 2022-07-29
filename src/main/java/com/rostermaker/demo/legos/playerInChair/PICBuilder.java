@@ -2,7 +2,6 @@ package com.rostermaker.demo.legos.playerInChair;
 
 
 import com.rostermaker.demo.legos.ShowPiece;
-import com.rostermaker.demo.legos.emptyChair.Chair;
 import com.rostermaker.demo.legos.scoreline.ScoreLine;
 import com.rostermaker.demo.models.part.Part;
 import com.rostermaker.demo.models.player.Player;

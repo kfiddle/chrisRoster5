@@ -1,0 +1,13 @@
+package com.rostermaker.demo.repos;
+
+import com.rostermaker.demo.models.gigOffer.GigOffer;
+import com.rostermaker.demo.models.player.Player;
+import org.springframework.data.repository.CrudRepository;
+
+import java.util.Collection;
+
+public interface GigOfferRepo extends CrudRepository<GigOffer, Long> {
+
+    Collection<GigOffer> findAllByPlayer(Player player);
+
+}

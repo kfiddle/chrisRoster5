@@ -2,7 +2,6 @@ package com.rostermaker.demo.repos;
 
 import com.rostermaker.demo.legos.ShowPiece;
 import com.rostermaker.demo.legos.playerInChair.PIC;
-import com.rostermaker.demo.legos.playerInChair.PlayerInChair;
 import com.rostermaker.demo.models.show.Show;
 import org.springframework.data.repository.CrudRepository;
 

@@ -1,9 +1,8 @@
 package com.rostermaker.demo.controllers;
 
 import com.rostermaker.demo.legos.ShowPiece;
-import com.rostermaker.demo.legos.emptyChair.Chair;
+import com.rostermaker.demo.legos.playerInChair.PIC;
 import com.rostermaker.demo.legos.playerInChair.PICBuilder;
-import com.rostermaker.demo.legos.playerInChair.PlayerInChair;
 import com.rostermaker.demo.legos.scoreline.ScoreLine;
 import com.rostermaker.demo.models.piece.Piece;
 import com.rostermaker.demo.models.show.Show;
@@ -28,10 +27,7 @@ public class ShowPieceRest {
     ScoreLineRepo scoreLineRepo;
 
     @Resource
-    ChairRepo chairRepo;
-
-    @Resource
-    PlayerInChairRepo picRepo;
+    PICRepo picRepo;
 
     @Resource
     PICRepo betterPICRepo;
@@ -52,11 +48,6 @@ public class ShowPieceRest {
             }
         }
 
-        if (chairRepo.existsByPiece(newShowPiece.getPiece())) {
-            for (Chair chair : chairRepo.findAllByPiece(newShowPiece.getPiece())) {
-                picRepo.save(new PlayerInChair(newShowPiece, chair));
-            }
-        }
         return newShowPiece;
     }
 
@@ -92,8 +83,8 @@ public class ShowPieceRest {
             ShowPiece spToRemove = showPieceToFind.get();
 
             if (picRepo.existsByShowPiece(spToRemove)) {
-                Collection<PlayerInChair> picsToRemove = picRepo.findAllByShowPiece(spToRemove);
-                for (PlayerInChair pic : picsToRemove) {
+                Collection<PIC> picsToRemove = picRepo.findAllByShowPiece(spToRemove);
+                for (PIC pic : picsToRemove) {
                     picRepo.deleteById(pic.getId());
                 }
             }

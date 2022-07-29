@@ -2,9 +2,7 @@ package com.rostermaker.demo.models.player;
 
 
 import com.rostermaker.demo.enums.Type;
-import com.rostermaker.demo.legos.emptyChair.Chair;
 import com.rostermaker.demo.legos.playerInChair.PIC;
-import com.rostermaker.demo.legos.playerInChair.PlayerInChair;
 import com.rostermaker.demo.models.instrument.Instrument;
 import com.rostermaker.demo.models.part.Part;
 
@@ -25,9 +23,6 @@ public class Player implements Comparable<Player> {
     private Instrument primaryInstrument;
 
     private int rank;
-
-//    @ElementCollection
-//    Collection<String> otherInstruments;
 
     @ManyToMany
     private List<Instrument> instruments = new ArrayList<>();
@@ -214,16 +209,6 @@ public class Player implements Comparable<Player> {
 
     public String getRole() {
         return role;
-    }
-
-    public boolean couldSitHere(PlayerInChair foundPIC) {
-        Chair chair = foundPIC.getChair();
-        for (Part part : chair.getParts()) {
-            if (!instruments.contains(part.getInstrument())) {
-                return false;
-            }
-        }
-        return true;
     }
 
     public boolean couldSitHere(PIC pic) {
