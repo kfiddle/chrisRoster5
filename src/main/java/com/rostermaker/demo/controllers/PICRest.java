@@ -4,10 +4,7 @@ package com.rostermaker.demo.controllers;
 import com.rostermaker.demo.PartsListMaker;
 import com.rostermaker.demo.enums.Type;
 import com.rostermaker.demo.legos.ShowPiece;
-import com.rostermaker.demo.legos.playerInChair.HornChairSorter;
-import com.rostermaker.demo.legos.playerInChair.HornPICSorter;
-import com.rostermaker.demo.legos.playerInChair.PIC;
-import com.rostermaker.demo.legos.playerInChair.PlayerInChair;
+import com.rostermaker.demo.legos.playerInChair.*;
 import com.rostermaker.demo.legos.scoreline.ScoreLine;
 import com.rostermaker.demo.models.instrument.Instrument;
 import com.rostermaker.demo.models.part.Part;
@@ -44,6 +41,23 @@ public class PICRest {
     @RequestMapping("/get-all-pics")
     public Collection<PIC> getAllPics() {
         return (Collection<PIC>) picRepo.findAll();
+    }
+
+
+    @PostMapping("/add-pic")
+    public PIC addPIC(@RequestBody PIC incomingPIC) throws IOException {
+        try {
+            PartsListMaker maker = new PartsListMaker(instrumentRepo);
+            PIC picToAdd = new PICBuilder()
+                    .parts(maker.makeList(incomingPIC.getParts()))
+                    .show(incomingPIC.getShow())
+                    .showPiece(incomingPIC.getShowPiece())
+                    .build();
+            picRepo.save(picToAdd);
+            return picToAdd;
+        } catch (Exception error) {
+            error.printStackTrace();
+        } return null;
     }
 
     @PostMapping("/delete-pic")

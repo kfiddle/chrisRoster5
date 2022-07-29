@@ -46,7 +46,15 @@ public class PICBuilder {
             this.primaryPart = parts.get(0);
         }
         return this;
+    }
 
+    public PICBuilder parts(List<Part> parts) {
+        Optional<List<Part>> partsOpt = Optional.ofNullable(parts);
+        partsOpt.ifPresent(gottenParts -> {
+            this.parts.addAll(gottenParts);
+            this.primaryPart = gottenParts.get(0);
+        });
+        return this;
     }
 
     public PIC build() {
