@@ -1,15 +1,9 @@
 package com.rostermaker.demo.controllers;
 
 
-import com.rostermaker.demo.PartsListMaker;
-import com.rostermaker.demo.legos.ShowPiece;
-import com.rostermaker.demo.legos.playerInChair.PICBuilder;
+import com.rostermaker.demo.service.ScoreLineMaker;
 import com.rostermaker.demo.legos.scoreline.ScoreLine;
-import com.rostermaker.demo.legos.scoreline.ScoreLineBuilder;
-import com.rostermaker.demo.models.instrument.Instrument;
-import com.rostermaker.demo.models.part.Part;
 import com.rostermaker.demo.models.piece.Piece;
-import com.rostermaker.demo.models.show.Show;
 import com.rostermaker.demo.repos.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,47 +39,13 @@ public class ScoreLineRest {
     @Resource
     PlayerRepo playerRepo;
 
-    public ScoreLine addScoreLine(ScoreLine incomingScoreLine) {
-        Piece piece = null;
-        Show show = null;
-        ScoreLine scoreLineToSave;
-
-        if (incomingScoreLine.getPiece() != null) {
-            Optional<Piece> pieceToFind = pieceRepo.findById(incomingScoreLine.getPiece().getId());
-            if (pieceToFind.isPresent()) {
-                piece = pieceToFind.get();
-            }
-        } else if (incomingScoreLine.getShow() != null) {
-            Optional<Show> showToFind = showRepo.findById(incomingScoreLine.getShow().getId());
-            if (showToFind.isPresent()) {
-                show = showToFind.get();
-            }
-        }
-
-        PartsListMaker maker = new PartsListMaker(instrumentRepo);
-        scoreLineToSave = new ScoreLineBuilder()
-                .parts(maker.makeList(incomingScoreLine.getParts()))
-                .piece(piece)
-                .show(show)
-                .build();
-        scoreLineRepo.save(scoreLineToSave);
-
-        if (scoreLineToSave.getShow() != null) {
-            picRepo.save(new PICBuilder().show(show).fromScoreLine(scoreLineToSave).build());
-        }
-
-        if (piece != null && showPieceRepo.existsByPiece(piece)) {
-            for (ShowPiece showPiece : showPieceRepo.findAllByPiece(piece)) {
-                picRepo.save(new PICBuilder().showPiece(showPiece).fromScoreLine(scoreLineToSave).build());
-            }
-        }
-        return scoreLineToSave;
-    }
 
     @PostMapping("/add-scoreline")
     public ScoreLine addChairWrapper(@RequestBody ScoreLine incomingScoreLine) throws IOException {
         try {
-            return addScoreLine(incomingScoreLine);
+            ScoreLineMaker scoreLineMaker = new ScoreLineMaker(scoreLineRepo, pieceRepo, showRepo, instrumentRepo, picRepo, showPieceRepo);
+            return scoreLineMaker.addScoreLine(incomingScoreLine);
+
         } catch (Exception error) {
             error.printStackTrace();
         }
@@ -95,10 +55,11 @@ public class ScoreLineRest {
     @PostMapping("/add-scorelines")
     public Collection<ScoreLine> addScoreLinesCollection(@RequestBody Collection<ScoreLine> incomingScoreLines) throws IOException {
         Collection<ScoreLine> scoreLinesToReturn = new ArrayList<>();
+        ScoreLineMaker scoreLineMaker = new ScoreLineMaker(scoreLineRepo, pieceRepo, showRepo, instrumentRepo, picRepo, showPieceRepo);
 
         try {
             for (ScoreLine scoreLine : incomingScoreLines) {
-                scoreLinesToReturn.add(addScoreLine(scoreLine));
+                scoreLinesToReturn.add(scoreLineMaker.addScoreLine(scoreLine));
             }
         } catch (Exception error) {
             error.printStackTrace();

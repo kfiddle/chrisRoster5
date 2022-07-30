@@ -1,12 +1,9 @@
 package com.rostermaker.demo.controllers;
 
+import com.rostermaker.demo.service.GigOfferReplyManager;
 import com.rostermaker.demo.enums.Event;
-import com.rostermaker.demo.enums.Reply;
-import com.rostermaker.demo.legos.ShowPiece;
 import com.rostermaker.demo.legos.playerInChair.PIC;
 import com.rostermaker.demo.models.gigOffer.GigOffer;
-import com.rostermaker.demo.models.instrument.Instrument;
-import com.rostermaker.demo.models.logEvent.LogEvent;
 import com.rostermaker.demo.models.player.Player;
 import com.rostermaker.demo.models.show.Horloge;
 import com.rostermaker.demo.models.show.Show;
@@ -15,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -109,60 +105,48 @@ public class GigOfferRest {
         return "nope";
     }
 
-    private void fillChair(GigOffer offerToSetReply) {
-        Player playerToSit = offerToSetReply.getPlayer();
-        int playerRank = playerToSit.getRank();
-        Instrument playerPrimInst = playerToSit.getPrimaryInstrument();
-
-        System.out.println(offerToSetReply.getPlayer().getLastName());
-
-        //for pops only
-
-        Collection<PIC> picsToFill = picRepo.findAllByShow(offerToSetReply.getShow());
-        for (PIC pic : picsToFill) {
-            if (pic.getPrimaryPart().getRank() == playerRank && pic.getPrimaryPart().getInstrument().equals(playerPrimInst)) {
-                pic.setPlayer(playerToSit);
-                picRepo.save(pic);
-            }
-        }
-
-        //for syms
-
-        for (ShowPiece showPiece : showPieceRepo.findAllByShow(offerToSetReply.getShow())) {
-            for (PIC pic : picRepo.findAllByShowPiece(showPiece)) {
-                if (pic.getPrimaryPart().getRank() == playerRank && pic.getPrimaryPart().getInstrument().equals(playerPrimInst)) {
-                    pic.setPlayer(playerToSit);
-                    picRepo.save(pic);
-                }
-            }
-        }
-    }
+//    private void fillChair(GigOffer offerToSetReply) {
+//        Player playerToSit = offerToSetReply.getPlayer();
+//        int playerRank = playerToSit.getRank();
+//        Instrument playerPrimInst = playerToSit.getPrimaryInstrument();
+//
+//
+//        //for pops only
+//
+//        Collection<PIC> picsToFill = picRepo.findAllByShow(offerToSetReply.getShow());
+//        for (PIC pic : picsToFill) {
+//            if (pic.getPrimaryPart().getRank() == playerRank && pic.getPrimaryPart().getInstrument().equals(playerPrimInst)) {
+//                pic.setPlayer(playerToSit);
+//                picRepo.save(pic);
+//            }
+//        }
+//
+//        //for syms
+//
+//        for (ShowPiece showPiece : showPieceRepo.findAllByShow(offerToSetReply.getShow())) {
+//            for (PIC pic : picRepo.findAllByShowPiece(showPiece)) {
+//                if (pic.getPrimaryPart().getRank() == playerRank && pic.getPrimaryPart().getInstrument().equals(playerPrimInst)) {
+//                    pic.setPlayer(playerToSit);
+//                    picRepo.save(pic);
+//                }
+//            }
+//        }
+//    }
 
     @PostMapping("/gig-offer-reply")
     public GigOffer logPlayerResponseToGigOffer(@RequestBody GigOffer incomingReply) throws IOException {
 
-
-        try {
-            Optional<GigOffer> offerToFind = gigOfferRepo.findById(incomingReply.getId());
-            LocalDate currentDate = LocalDate.now();
-            if (offerToFind.isPresent()) {
-                GigOffer offerToSetReply = offerToFind.get();
-                offerToSetReply.setReply(incomingReply.getReply());
-                offerToSetReply.setResponseDate(currentDate);
-                gigOfferRepo.save(offerToSetReply);
-
-                if (offerToSetReply.getReply().equals(Reply.ACCEPT)) {
-                    fillChair(offerToSetReply);
-                }
-
-                LogEvent newEvent = new LogEvent(offerToSetReply, currentDate);
-                logEventRepo.save(newEvent);
-
-                return offerToSetReply;
-            }
-        } catch (Exception error) {
-            error.printStackTrace();
-        }
+        System.out.println(incomingReply.getPlayer().getFirstNameArea());
+//        try {
+//            Optional<GigOffer> offerToFind = gigOfferRepo.findById(incomingReply.getId());
+//            GigOfferReplyManager gigOfferReplyManager = new GigOfferReplyManager(gigOfferRepo, logEventRepo, picRepo, showPieceRepo);
+//
+//            if (offerToFind.isPresent()) {
+//                return gigOfferReplyManager.saveAndFillChairs(offerToFind.get());
+//            }
+//        } catch (Exception error) {
+//            error.printStackTrace();
+//        }
         return null;
     }
 

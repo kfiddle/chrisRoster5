@@ -1,17 +1,13 @@
 package com.rostermaker.demo.controllers;
 
 
-import com.rostermaker.demo.PartsListMaker;
+import com.rostermaker.demo.service.PartsListMaker;
 import com.rostermaker.demo.enums.Type;
 import com.rostermaker.demo.legos.ShowPiece;
 import com.rostermaker.demo.legos.playerInChair.*;
-import com.rostermaker.demo.legos.scoreline.ScoreLine;
-import com.rostermaker.demo.models.instrument.Instrument;
-import com.rostermaker.demo.models.part.Part;
 import com.rostermaker.demo.models.player.Player;
 import com.rostermaker.demo.models.show.Show;
 import com.rostermaker.demo.repos.*;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;

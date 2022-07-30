@@ -1,4 +1,4 @@
-package com.rostermaker.demo;
+package com.rostermaker.demo.service;
 
 
 import com.rostermaker.demo.models.instrument.Instrument;

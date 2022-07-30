@@ -4,6 +4,7 @@ package com.rostermaker.demo;
 import com.rostermaker.demo.enums.Event;
 import com.rostermaker.demo.enums.Type;
 import com.rostermaker.demo.legos.ShowPiece;
+import com.rostermaker.demo.models.gigOffer.GigOffer;
 import com.rostermaker.demo.models.instrument.Instrument;
 import com.rostermaker.demo.models.part.Part;
 import com.rostermaker.demo.models.piece.Piece;
@@ -44,6 +45,9 @@ public class Populator implements CommandLineRunner {
 
     @Resource
     HorlogeRepo horlogeRepo;
+
+    @Resource
+    GigOfferRepo gigOfferRepo;
 
     @Override
     public void run(String... args) throws Exception {
@@ -242,7 +246,21 @@ public class Populator implements CommandLineRunner {
 
         showPieceRepo.saveAll(Arrays.asList(diamondOnFirst, poulencOnFirst, laMerOnFirst));
 
+        LocalDate generalDate = LocalDate.of(2022, 6, 17);
 
+        gigOfferRepo.saveAll(Arrays.asList(new GigOffer(pops1, kj, generalDate),
+                new GigOffer(pops4, leAnne, generalDate),
+                new GigOffer(sym1, leAnne, generalDate),
+                new GigOffer(sym2, leAnne, generalDate),
+                new GigOffer(sym3, leAnne, generalDate),
+                new GigOffer(sym4, leAnne, generalDate),
+                new GigOffer(sym5, leAnne, generalDate),
+                new GigOffer(pops1, leAnne, generalDate),
+                new GigOffer(pops2, leAnne, generalDate),
+                new GigOffer(pops3, leAnne, generalDate),
+                new GigOffer(pops5, leAnne, generalDate),
+                new GigOffer(sym1, ami, generalDate),
+                new GigOffer(sym2, danna, generalDate)));
 
     }
 }
