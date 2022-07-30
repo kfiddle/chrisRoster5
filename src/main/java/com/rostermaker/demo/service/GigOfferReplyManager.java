@@ -64,21 +64,21 @@ public class GigOfferReplyManager {
 
 
 
-    public GigOffer saveAndFillChairs(GigOffer incomingReply) {
+    public GigOffer saveAndFillChairs(GigOffer previousOffer, Reply incomingReply) {
 
         LocalDate currentDate = LocalDate.now();
-            incomingReply.setReply(incomingReply.getReply());
-            incomingReply.setResponseDate(currentDate);
-            gigOfferRepo.save(incomingReply);
+            previousOffer.setReply(previousOffer.getReply());
+            previousOffer.setResponseDate(currentDate);
+            gigOfferRepo.save(previousOffer);
 
-            if (incomingReply.getReply().equals(Reply.ACCEPT)) {
-                fillChair(incomingReply);
+            if (incomingReply.equals(Reply.ACCEPT)) {
+                fillChair(previousOffer);
             }
 
-            LogEvent newEvent = new LogEvent(incomingReply, currentDate);
+            LogEvent newEvent = new LogEvent(previousOffer, currentDate);
             logEventRepo.save(newEvent);
 
-            return incomingReply;
+            return previousOffer;
     }
 
 }

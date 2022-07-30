@@ -136,17 +136,17 @@ public class GigOfferRest {
     @PostMapping("/gig-offer-reply")
     public GigOffer logPlayerResponseToGigOffer(@RequestBody GigOffer incomingReply) throws IOException {
 
-        System.out.println(incomingReply.getPlayer().getFirstNameArea());
-//        try {
-//            Optional<GigOffer> offerToFind = gigOfferRepo.findById(incomingReply.getId());
-//            GigOfferReplyManager gigOfferReplyManager = new GigOfferReplyManager(gigOfferRepo, logEventRepo, picRepo, showPieceRepo);
-//
-//            if (offerToFind.isPresent()) {
-//                return gigOfferReplyManager.saveAndFillChairs(offerToFind.get());
-//            }
-//        } catch (Exception error) {
-//            error.printStackTrace();
-//        }
+
+        try {
+            Optional<GigOffer> offerToFind = gigOfferRepo.findById(incomingReply.getId());
+            GigOfferReplyManager gigOfferReplyManager = new GigOfferReplyManager(gigOfferRepo, logEventRepo, picRepo, showPieceRepo);
+
+            if (offerToFind.isPresent()) {
+                return gigOfferReplyManager.saveAndFillChairs(offerToFind.get(), incomingReply.getReply());
+            }
+        } catch (Exception error) {
+            error.printStackTrace();
+        }
         return null;
     }
 
