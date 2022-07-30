@@ -105,33 +105,23 @@ public class GigOfferRest {
         return "nope";
     }
 
-//    private void fillChair(GigOffer offerToSetReply) {
-//        Player playerToSit = offerToSetReply.getPlayer();
-//        int playerRank = playerToSit.getRank();
-//        Instrument playerPrimInst = playerToSit.getPrimaryInstrument();
-//
-//
-//        //for pops only
-//
-//        Collection<PIC> picsToFill = picRepo.findAllByShow(offerToSetReply.getShow());
-//        for (PIC pic : picsToFill) {
-//            if (pic.getPrimaryPart().getRank() == playerRank && pic.getPrimaryPart().getInstrument().equals(playerPrimInst)) {
-//                pic.setPlayer(playerToSit);
-//                picRepo.save(pic);
-//            }
-//        }
-//
-//        //for syms
-//
-//        for (ShowPiece showPiece : showPieceRepo.findAllByShow(offerToSetReply.getShow())) {
-//            for (PIC pic : picRepo.findAllByShowPiece(showPiece)) {
-//                if (pic.getPrimaryPart().getRank() == playerRank && pic.getPrimaryPart().getInstrument().equals(playerPrimInst)) {
-//                    pic.setPlayer(playerToSit);
-//                    picRepo.save(pic);
-//                }
-//            }
-//        }
-//    }
+    @PostMapping("/gig-offer-replies")
+    public Collection<GigOffer> logPlayerPSAResponses(@RequestBody Collection<GigOffer> incomingAnswers) throws IOException {
+        Collection<GigOffer> amendedOffers = new ArrayList<>();
+        GigOfferReplyManager gigOfferReplyManager = new GigOfferReplyManager(gigOfferRepo, logEventRepo, picRepo, showPieceRepo);
+
+        try {
+            for (GigOffer offer : incomingAnswers) {
+                Optional<GigOffer> offerToFind = gigOfferRepo.findById(offer.getId());
+                offerToFind.ifPresent(gigOffer -> amendedOffers.add(gigOfferReplyManager.saveAndFillChairs(gigOffer, offer.getReply())));
+            }
+            return amendedOffers;
+
+        } catch (Exception error) {
+            error.printStackTrace();
+        }
+        return null;
+    }
 
     @PostMapping("/gig-offer-reply")
     public GigOffer logPlayerResponseToGigOffer(@RequestBody GigOffer incomingReply) throws IOException {

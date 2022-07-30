@@ -67,7 +67,7 @@ public class GigOfferReplyManager {
     public GigOffer saveAndFillChairs(GigOffer previousOffer, Reply incomingReply) {
 
         LocalDate currentDate = LocalDate.now();
-            previousOffer.setReply(previousOffer.getReply());
+            previousOffer.setReply(incomingReply);
             previousOffer.setResponseDate(currentDate);
             gigOfferRepo.save(previousOffer);
 
