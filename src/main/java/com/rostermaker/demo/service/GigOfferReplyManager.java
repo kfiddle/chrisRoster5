@@ -38,8 +38,6 @@ public class GigOfferReplyManager {
         int playerRank = playerToSit.getRank();
         Instrument playerPrimInst = playerToSit.getPrimaryInstrument();
 
-        System.out.println(playerToSit.getFirstNameArea());
-
         //for pops only
 
         Collection<PIC> picsToFill = picRepo.findAllByShow(offerToSetReply.getShow());
@@ -63,22 +61,21 @@ public class GigOfferReplyManager {
     }
 
 
-
     public GigOffer saveAndFillChairs(GigOffer previousOffer, Reply incomingReply) {
 
         LocalDate currentDate = LocalDate.now();
-            previousOffer.setReply(incomingReply);
-            previousOffer.setResponseDate(currentDate);
-            gigOfferRepo.save(previousOffer);
+        previousOffer.setReply(incomingReply);
+        previousOffer.setResponseDate(currentDate);
+        gigOfferRepo.save(previousOffer);
 
-            if (incomingReply.equals(Reply.ACCEPT)) {
-                fillChair(previousOffer);
-            }
+        if (incomingReply.equals(Reply.ACCEPT)) {
+            fillChair(previousOffer);
+        }
 
-            LogEvent newEvent = new LogEvent(previousOffer, currentDate);
-            logEventRepo.save(newEvent);
+        LogEvent newEvent = new LogEvent(previousOffer, currentDate);
+        logEventRepo.save(newEvent);
 
-            return previousOffer;
+        return previousOffer;
     }
 
 }

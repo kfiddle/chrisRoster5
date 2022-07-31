@@ -260,6 +260,8 @@ public class Populator implements CommandLineRunner {
                 new GigOffer(pops3, leAnne, generalDate),
                 new GigOffer(pops5, leAnne, generalDate),
                 new GigOffer(sym1, ami, generalDate),
+                new GigOffer(sym2, ami, generalDate),
+                new GigOffer(sym3, ami, generalDate),
                 new GigOffer(sym2, danna, generalDate)));
 
     }
