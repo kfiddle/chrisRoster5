@@ -111,10 +111,19 @@ public class GigOfferRest {
         GigOfferReplyManager gigOfferReplyManager = new GigOfferReplyManager(gigOfferRepo, logEventRepo, picRepo, showPieceRepo);
 
         try {
-            for (GigOffer offer : incomingAnswers) {
-                Optional<GigOffer> offerToFind = gigOfferRepo.findById(offer.getId());
-                offerToFind.ifPresent(gigOffer -> amendedOffers.add(gigOfferReplyManager.saveAndFillChairs(gigOffer, offer.getReply())));
-            }
+
+
+//            for (GigOffer offer : incomingAnswers) {
+//                Optional<GigOffer> offerToFind = gigOfferRepo.findById(offer.getId());
+//                offerToFind.ifPresent(gigOffer -> amendedOffers.add(gigOfferReplyManager.saveAndFillChairs(gigOffer, offer.getReply())));
+//            }
+
+            incomingAnswers.forEach(gigOffer -> {
+                Optional<GigOffer> offerToFind = gigOfferRepo.findById(gigOffer.getId());
+                offerToFind.ifPresent(foundOffer -> amendedOffers.add(gigOfferReplyManager.saveAndFillChairs(foundOffer, gigOffer.getReply())));
+
+            });
+
             return amendedOffers;
 
         } catch (Exception error) {

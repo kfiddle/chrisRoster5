@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin
@@ -38,7 +39,7 @@ public class InstrumentRest {
         return instNames;
     }
 
-    @PostMapping("add-instrument")
+    @PostMapping("/add-instrument")
     public Instrument addAnInstrument(@RequestBody Instrument newInstrument) throws IOException {
         try {
             if (!instrumentRepo.existsByName(newInstrument.getName())) {
@@ -50,6 +51,22 @@ public class InstrumentRest {
                 return newInstrument;
             }
 
+        } catch (Exception error) {
+            error.printStackTrace();
+        }
+        return null;
+    }
+
+    @PostMapping("/edit-abbreviation")
+    public Instrument editInstAbbrev(@RequestBody Instrument incomingInstrument) throws IOException {
+        try {
+            Optional<Instrument> instToFind = instrumentRepo.findById(incomingInstrument.getId());
+            if (instToFind.isPresent()) {
+                Instrument inst = instToFind.get();
+                inst.setAbbreviation(incomingInstrument.getAbbreviation());
+                instrumentRepo.save(inst);
+                return inst;
+            }
         } catch (Exception error) {
             error.printStackTrace();
         }
