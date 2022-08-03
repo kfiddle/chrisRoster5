@@ -55,11 +55,9 @@ public class InstrumentRest {
                 if (newInstrument.getAbbreviation() != null) {
                     instrumentToAdd.setAbbreviation(newInstrument.getAbbreviation());
                 }
-
-                System.out.println(newInstrument.getName() + "      " + newInstrument.getAbbreviation());
                 instrumentRepo.save(instrumentToAdd);
+                return "success";
             }
-            return "success";
         } catch (Exception error) {
             error.printStackTrace();
         }
