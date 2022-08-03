@@ -7,10 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @CrossOrigin
@@ -40,21 +37,32 @@ public class InstrumentRest {
     }
 
     @PostMapping("/add-instrument")
-    public Instrument addAnInstrument(@RequestBody Instrument newInstrument) throws IOException {
+    public String addAnInstrument(@RequestBody Instrument newInstrument) throws IOException {
+
+        //don't forget, must be accepting only CAPS from the front-end
+
         try {
-            if (!instrumentRepo.existsByName(newInstrument.getName())) {
+            if (instrumentRepo.existsByName(newInstrument.getName())) {
+                return "instrument exists";
+            } else if (instrumentRepo.existsByAbbreviation(newInstrument.getAbbreviation())) {
+                return "abbreviation exists";
+            } else {
                 Instrument instrumentToAdd = new Instrument(newInstrument.getName());
                 if (newInstrument.getScoreOrder() > 0) {
                     instrumentToAdd.setScoreOrder(newInstrument.getScoreOrder());
                 }
-                instrumentRepo.save(instrumentToAdd);
-                return newInstrument;
-            }
+                if (newInstrument.getAbbreviation() != null) {
+                    instrumentToAdd.setAbbreviation(newInstrument.getAbbreviation());
+                }
 
+                System.out.println(newInstrument.getName() + "      " + newInstrument.getAbbreviation());
+                instrumentRepo.save(instrumentToAdd);
+            }
+            return "success";
         } catch (Exception error) {
             error.printStackTrace();
         }
-        return null;
+        return "failed attempt";
     }
 
     @PostMapping("/edit-abbreviation")

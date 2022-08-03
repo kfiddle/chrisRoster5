@@ -4,6 +4,7 @@ package com.rostermaker.demo.models.instrument;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.util.Locale;
 
 @Entity
 public class Instrument implements Comparable<Instrument> {
@@ -25,23 +26,23 @@ public class Instrument implements Comparable<Instrument> {
     }
 
     public Instrument(String name, int scoreOrder) {
-        this.name = name;
+        this.name = name.toUpperCase();
         this.scoreOrder = scoreOrder;
     }
 
     public Instrument(String name, String abbreviation, int scoreOrder) {
-        this.name = name;
-        this.abbreviation = abbreviation;
+        this.name = name.toUpperCase();
+        this.abbreviation = abbreviation.toUpperCase();
         this.scoreOrder = scoreOrder;
     }
 
     public Instrument(String name, String abbreviation) {
-        this.name = name;
-        this.abbreviation = abbreviation;
+        this.name = name.toUpperCase();
+        this.abbreviation = abbreviation.toUpperCase();
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name.toUpperCase();
     }
 
     public void setScoreOrder(int scoreOrder) {
@@ -49,7 +50,8 @@ public class Instrument implements Comparable<Instrument> {
     }
 
     public void setAbbreviation(String abbreviation) {
-        this.abbreviation = abbreviation;
+        this.abbreviation = abbreviation.toUpperCase();
+
     }
 
     public Long getId() {
@@ -70,7 +72,11 @@ public class Instrument implements Comparable<Instrument> {
 
     @Override
     public int compareTo(Instrument next) {
-        return Integer.compare(this.scoreOrder, next.getScoreOrder());
+        if (scoreOrder > 0) {
+            return Integer.compare(this.scoreOrder, next.getScoreOrder());
+        } else {
+            return 1;
+        }
     }
 
 }
